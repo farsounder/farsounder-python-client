@@ -13,7 +13,7 @@ uv run --group dev gen-protos
 Or:
 
 ```
-python tools/gen_protos.py
+uv run tools/gen_protos.py
 ```
 
 ## Usage (async)
