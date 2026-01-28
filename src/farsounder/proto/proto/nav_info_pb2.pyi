@@ -14,11 +14,7 @@ class Depth(_message.Message):
     NMEA_FIELD_NUMBER: _ClassVar[int]
     depth: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        depth: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, depth: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class Heading(_message.Message):
     __slots__ = ("heading", "type", "nmea")
@@ -28,7 +24,6 @@ class Heading(_message.Message):
         OBSOLETE_kMagnetic: _ClassVar[Heading.Type]
         kTrue: _ClassVar[Heading.Type]
         kManufactured: _ClassVar[Heading.Type]
-
     OBSOLETE_kSensor: Heading.Type
     OBSOLETE_kMagnetic: Heading.Type
     kTrue: Heading.Type
@@ -39,12 +34,7 @@ class Heading(_message.Message):
     heading: float
     type: Heading.Type
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        heading: _Optional[float] = ...,
-        type: _Optional[_Union[Heading.Type, str]] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, heading: _Optional[float] = ..., type: _Optional[_Union[Heading.Type, str]] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class Position(_message.Message):
     __slots__ = ("lat", "lon", "nmea")
@@ -54,12 +44,7 @@ class Position(_message.Message):
     lat: float
     lon: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        lat: _Optional[float] = ...,
-        lon: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, lat: _Optional[float] = ..., lon: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class Speed(_message.Message):
     __slots__ = ("speed", "nmea")
@@ -67,11 +52,7 @@ class Speed(_message.Message):
     NMEA_FIELD_NUMBER: _ClassVar[int]
     speed: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        speed: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, speed: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class DualSpeed(_message.Message):
     __slots__ = ("ground_transversal", "ground_longitudinal", "nmea")
@@ -81,12 +62,7 @@ class DualSpeed(_message.Message):
     ground_transversal: float
     ground_longitudinal: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        ground_transversal: _Optional[float] = ...,
-        ground_longitudinal: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, ground_transversal: _Optional[float] = ..., ground_longitudinal: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class RateOfTurn(_message.Message):
     __slots__ = ("rot", "nmea")
@@ -94,11 +70,7 @@ class RateOfTurn(_message.Message):
     NMEA_FIELD_NUMBER: _ClassVar[int]
     rot: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        rot: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, rot: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class CourseOverGround(_message.Message):
     __slots__ = ("true_heading", "nmea")
@@ -106,57 +78,34 @@ class CourseOverGround(_message.Message):
     NMEA_FIELD_NUMBER: _ClassVar[int]
     true_heading: float
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self,
-        true_heading: _Optional[float] = ...,
-        nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, true_heading: _Optional[float] = ..., nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class AIS(_message.Message):
     __slots__ = ("nmea",)
     NMEA_FIELD_NUMBER: _ClassVar[int]
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self, nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...
-    ) -> None: ...
+    def __init__(self, nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class ARPA(_message.Message):
     __slots__ = ("nmea",)
     NMEA_FIELD_NUMBER: _ClassVar[int]
     nmea: _nmea_pb2.NmeaData
-    def __init__(
-        self, nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...
-    ) -> None: ...
+    def __init__(self, nmea: _Optional[_Union[_nmea_pb2.NmeaData, _Mapping]] = ...) -> None: ...
 
 class UTCTime(_message.Message):
     __slots__ = ("time",)
     TIME_FIELD_NUMBER: _ClassVar[int]
     time: _time_pb2.Time
-    def __init__(
-        self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...
-    ) -> None: ...
+    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...) -> None: ...
 
 class LocalTime(_message.Message):
     __slots__ = ("time",)
     TIME_FIELD_NUMBER: _ClassVar[int]
     time: _time_pb2.Time
-    def __init__(
-        self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...
-    ) -> None: ...
+    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...) -> None: ...
 
 class FilteredState(_message.Message):
-    __slots__ = (
-        "time",
-        "filter_enabled",
-        "lat",
-        "lon",
-        "latlon_is_filtered",
-        "heading",
-        "heading_is_filtered",
-        "speed",
-        "course",
-        "rot",
-    )
+    __slots__ = ("time", "filter_enabled", "lat", "lon", "latlon_is_filtered", "heading", "heading_is_filtered", "speed", "course", "rot")
     TIME_FIELD_NUMBER: _ClassVar[int]
     FILTER_ENABLED_FIELD_NUMBER: _ClassVar[int]
     LAT_FIELD_NUMBER: _ClassVar[int]
@@ -177,16 +126,4 @@ class FilteredState(_message.Message):
     speed: float
     course: float
     rot: float
-    def __init__(
-        self,
-        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
-        filter_enabled: bool = ...,
-        lat: _Optional[float] = ...,
-        lon: _Optional[float] = ...,
-        latlon_is_filtered: bool = ...,
-        heading: _Optional[float] = ...,
-        heading_is_filtered: bool = ...,
-        speed: _Optional[float] = ...,
-        course: _Optional[float] = ...,
-        rot: _Optional[float] = ...,
-    ) -> None: ...
+    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., filter_enabled: bool = ..., lat: _Optional[float] = ..., lon: _Optional[float] = ..., latlon_is_filtered: bool = ..., heading: _Optional[float] = ..., heading_is_filtered: bool = ..., speed: _Optional[float] = ..., course: _Optional[float] = ..., rot: _Optional[float] = ...) -> None: ...

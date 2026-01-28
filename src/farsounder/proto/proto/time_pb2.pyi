@@ -20,13 +20,4 @@ class Time(_message.Message):
     minute: int
     second: int
     millisecond: int
-    def __init__(
-        self,
-        year: _Optional[int] = ...,
-        month: _Optional[int] = ...,
-        day: _Optional[int] = ...,
-        hour: _Optional[int] = ...,
-        minute: _Optional[int] = ...,
-        second: _Optional[int] = ...,
-        millisecond: _Optional[int] = ...,
-    ) -> None: ...
+    def __init__(self, year: _Optional[int] = ..., month: _Optional[int] = ..., day: _Optional[int] = ..., hour: _Optional[int] = ..., minute: _Optional[int] = ..., second: _Optional[int] = ..., millisecond: _Optional[int] = ...) -> None: ...

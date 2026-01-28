@@ -8,6 +8,9 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "protobuf",
+    "pyzmq",
+    "tornado>=6.5.4",
 ]
 
 [project.scripts]
@@ -17,7 +20,6 @@ gen-protos = "farsounder.tools.gen_protos:main"
 [dependency-groups]
 dev = [
     "grpcio-tools",
-    "protobuf",
     "ruff>=0.14.14",
 ]
 
