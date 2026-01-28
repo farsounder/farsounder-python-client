@@ -1,4 +1,9 @@
-from farsounder.client.config import ClientConfig, PubSubMessage, ReqRepEndpoint, build_config
+from farsounder.client.config import (
+    ClientConfig,
+    PubSubMessage,
+    ReqRepEndpoint,
+    build_config,
+)
 from farsounder.client.requests import (
     get_processor_settings,
     get_vessel_info,

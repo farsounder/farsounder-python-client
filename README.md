@@ -16,13 +16,17 @@ Or:
 uv run tools/gen_protos.py
 ```
 
-## Usage (async)
+## Usage
 
 ```python
 import asyncio
 
-from farsounder import build_config, get_processor_settings, subscribe
-from farsounder.proto.proto import nav_api_pb2 as nav_api
+from farsounder import (
+    build_config,
+    get_processor_settings,
+    nav_api_pb2,
+    subscribe
+)
 
 
 async def main() -> None:
@@ -33,7 +37,8 @@ async def main() -> None:
 
     sub = subscribe(config)
 
-    def on_targets(message: nav_api.TargetData) -> None:
+    def on_targets(message: nav_api_pb2.TargetData) -> None:
+        print("Got a TargetData!")
         print("Targets:", len(message.groups))
 
     # Pub/Sub

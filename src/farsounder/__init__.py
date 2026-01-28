@@ -37,9 +37,11 @@ _PROTO_EXPORTS = {
 def __getattr__(name: str):
     if name in _CLIENT_EXPORTS:
         from farsounder import client
+
         return getattr(client, name)
     if name in _PROTO_EXPORTS:
         from importlib import import_module
+
         return import_module(f"farsounder.proto.proto.{name}")
     raise AttributeError(f"module 'farsounder' has no attribute {name!r}")
 

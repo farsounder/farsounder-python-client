@@ -105,7 +105,9 @@ async def _rep_loop(
         await socket.send(response.SerializeToString())
 
 
-def _handle_get_processor_settings(state: BackendState, _: bytes) -> nav_api.GetProcessorSettingsResponse:
+def _handle_get_processor_settings(
+    state: BackendState, _: bytes
+) -> nav_api.GetProcessorSettingsResponse:
     return nav_api.GetProcessorSettingsResponse(
         result=_result_ok(),
         settings=_build_processor_settings(state),
@@ -150,8 +152,12 @@ def _handle_set_squelchless_detector(
     return nav_api.SetSquelchlessInWaterDetectorResponse(result=_result_ok())
 
 
-def _handle_get_vessel_info(state: BackendState, _: bytes) -> nav_api.GetVesselInfoResponse:
-    return nav_api.GetVesselInfoResponse(result=_result_ok(), info=_build_vessel_info(state))
+def _handle_get_vessel_info(
+    state: BackendState, _: bytes
+) -> nav_api.GetVesselInfoResponse:
+    return nav_api.GetVesselInfoResponse(
+        result=_result_ok(), info=_build_vessel_info(state)
+    )
 
 
 async def main() -> None:
@@ -178,11 +184,15 @@ async def main() -> None:
     }
 
     rep_map = {
-        "GetProcessorSettings": lambda data: _handle_get_processor_settings(state, data),
+        "GetProcessorSettings": lambda data: _handle_get_processor_settings(
+            state, data
+        ),
         "SetFieldOfView": lambda data: _handle_set_fov(state, data),
         "SetBottomDetection": lambda data: _handle_set_bottom_detection(state, data),
         "SetInWaterSquelch": lambda data: _handle_set_inwater_squelch(state, data),
-        "SetSquelchlessInWaterDetector": lambda data: _handle_set_squelchless_detector(state, data),
+        "SetSquelchlessInWaterDetector": lambda data: _handle_set_squelchless_detector(
+            state, data
+        ),
         "GetVesselInfo": lambda data: _handle_get_vessel_info(state, data),
     }
 
@@ -190,7 +200,9 @@ async def main() -> None:
         socket = ctx.socket(zmq.PUB)
         socket.bind(f"tcp://{args.bind}:{port}")
         pub_sockets.append(socket)
-        tasks.append(asyncio.create_task(_publish_loop(socket, pub_map[name], args.interval)))
+        tasks.append(
+            asyncio.create_task(_publish_loop(socket, pub_map[name], args.interval))
+        )
 
     for name, port in REP_PORTS.items():
         socket = ctx.socket(zmq.REP)

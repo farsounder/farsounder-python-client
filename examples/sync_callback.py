@@ -49,7 +49,10 @@ async def _run_async(stop_event: threading.Event) -> None:
         stop_event.set()
         return
 
-    print("Processor settings:", settings.result.code if settings.HasField("result") else None)
+    print(
+        "Processor settings:",
+        settings.result.code if settings.HasField("result") else None,
+    )
     print("Listening for messages. Press Ctrl+C to stop.")
     try:
         while not stop_event.is_set():

@@ -26,6 +26,7 @@ class FieldOfView(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     OBSELETE_k90d330m: _ClassVar[FieldOfView]
     OBSELETE_k60d440m: _ClassVar[FieldOfView]
     OBSELETE_kAlt: _ClassVar[FieldOfView]
+
 k120d100m: FieldOfView
 k120d200m: FieldOfView
 k90d500m: FieldOfView
@@ -50,6 +51,7 @@ class RequestResult(_message.Message):
         kParameterOutOfRange: _ClassVar[RequestResult.ResultCode]
         kParameterMissing: _ClassVar[RequestResult.ResultCode]
         kInvalidRequest: _ClassVar[RequestResult.ResultCode]
+
     kSuccess: RequestResult.ResultCode
     kUnknownError: RequestResult.ResultCode
     kOperationUnavailable: RequestResult.ResultCode
@@ -62,10 +64,22 @@ class RequestResult(_message.Message):
     time: _time_pb2.Time
     code: RequestResult.ResultCode
     result_detail: str
-    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., code: _Optional[_Union[RequestResult.ResultCode, str]] = ..., result_detail: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
+        code: _Optional[_Union[RequestResult.ResultCode, str]] = ...,
+        result_detail: _Optional[str] = ...,
+    ) -> None: ...
 
 class HydrophoneData(_message.Message):
-    __slots__ = ("time", "raw_timeseries", "num_hor_phones", "num_ver_phones", "serial", "transmit_id")
+    __slots__ = (
+        "time",
+        "raw_timeseries",
+        "num_hor_phones",
+        "num_ver_phones",
+        "serial",
+        "transmit_id",
+    )
     TIME_FIELD_NUMBER: _ClassVar[int]
     RAW_TIMESERIES_FIELD_NUMBER: _ClassVar[int]
     NUM_HOR_PHONES_FIELD_NUMBER: _ClassVar[int]
@@ -78,10 +92,28 @@ class HydrophoneData(_message.Message):
     num_ver_phones: int
     serial: str
     transmit_id: str
-    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., raw_timeseries: _Optional[_Union[_array_pb2.ArrayData, _Mapping]] = ..., num_hor_phones: _Optional[int] = ..., num_ver_phones: _Optional[int] = ..., serial: _Optional[str] = ..., transmit_id: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
+        raw_timeseries: _Optional[_Union[_array_pb2.ArrayData, _Mapping]] = ...,
+        num_hor_phones: _Optional[int] = ...,
+        num_ver_phones: _Optional[int] = ...,
+        serial: _Optional[str] = ...,
+        transmit_id: _Optional[str] = ...,
+    ) -> None: ...
 
 class TargetData(_message.Message):
-    __slots__ = ("time", "serial", "heading", "position", "bottom", "groups", "grid_description", "max_depth", "max_range_index")
+    __slots__ = (
+        "time",
+        "serial",
+        "heading",
+        "position",
+        "bottom",
+        "groups",
+        "grid_description",
+        "max_depth",
+        "max_range_index",
+    )
     TIME_FIELD_NUMBER: _ClassVar[int]
     SERIAL_FIELD_NUMBER: _ClassVar[int]
     HEADING_FIELD_NUMBER: _ClassVar[int]
@@ -100,10 +132,32 @@ class TargetData(_message.Message):
     grid_description: _grid_description_pb2.GridDescription
     max_depth: float
     max_range_index: int
-    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., serial: _Optional[str] = ..., heading: _Optional[_Union[_nav_info_pb2.Heading, _Mapping]] = ..., position: _Optional[_Union[_nav_info_pb2.Position, _Mapping]] = ..., bottom: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ..., groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ..., grid_description: _Optional[_Union[_grid_description_pb2.GridDescription, _Mapping]] = ..., max_depth: _Optional[float] = ..., max_range_index: _Optional[int] = ...) -> None: ...
+    def __init__(
+        self,
+        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
+        serial: _Optional[str] = ...,
+        heading: _Optional[_Union[_nav_info_pb2.Heading, _Mapping]] = ...,
+        position: _Optional[_Union[_nav_info_pb2.Position, _Mapping]] = ...,
+        bottom: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ...,
+        groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ...,
+        grid_description: _Optional[
+            _Union[_grid_description_pb2.GridDescription, _Mapping]
+        ] = ...,
+        max_depth: _Optional[float] = ...,
+        max_range_index: _Optional[int] = ...,
+    ) -> None: ...
 
 class Bin(_message.Message):
-    __slots__ = ("hor_index", "ver_index", "range_index", "cross_range", "down_range", "depth", "strength", "confidence")
+    __slots__ = (
+        "hor_index",
+        "ver_index",
+        "range_index",
+        "cross_range",
+        "down_range",
+        "depth",
+        "strength",
+        "confidence",
+    )
     HOR_INDEX_FIELD_NUMBER: _ClassVar[int]
     VER_INDEX_FIELD_NUMBER: _ClassVar[int]
     RANGE_INDEX_FIELD_NUMBER: _ClassVar[int]
@@ -120,22 +174,44 @@ class Bin(_message.Message):
     depth: float
     strength: float
     confidence: float
-    def __init__(self, hor_index: _Optional[int] = ..., ver_index: _Optional[int] = ..., range_index: _Optional[int] = ..., cross_range: _Optional[float] = ..., down_range: _Optional[float] = ..., depth: _Optional[float] = ..., strength: _Optional[float] = ..., confidence: _Optional[float] = ...) -> None: ...
+    def __init__(
+        self,
+        hor_index: _Optional[int] = ...,
+        ver_index: _Optional[int] = ...,
+        range_index: _Optional[int] = ...,
+        cross_range: _Optional[float] = ...,
+        down_range: _Optional[float] = ...,
+        depth: _Optional[float] = ...,
+        strength: _Optional[float] = ...,
+        confidence: _Optional[float] = ...,
+    ) -> None: ...
 
 class Group(_message.Message):
     __slots__ = ("bins",)
     BINS_FIELD_NUMBER: _ClassVar[int]
     bins: _containers.RepeatedCompositeFieldContainer[Bin]
-    def __init__(self, bins: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self, bins: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ...
+    ) -> None: ...
 
 class ProcessorSettings(_message.Message):
-    __slots__ = ("time", "min_inwater_squelch", "max_inwater_squelch", "inwater_squelch", "squelchless_inwater_detector", "detect_bottom", "system_type", "fov")
+    __slots__ = (
+        "time",
+        "min_inwater_squelch",
+        "max_inwater_squelch",
+        "inwater_squelch",
+        "squelchless_inwater_detector",
+        "detect_bottom",
+        "system_type",
+        "fov",
+    )
     class SystemType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         kFS500: _ClassVar[ProcessorSettings.SystemType]
         kFS1000: _ClassVar[ProcessorSettings.SystemType]
         kFS350: _ClassVar[ProcessorSettings.SystemType]
         OBSELETE_kFS3DT: _ClassVar[ProcessorSettings.SystemType]
+
     kFS500: ProcessorSettings.SystemType
     kFS1000: ProcessorSettings.SystemType
     kFS350: ProcessorSettings.SystemType
@@ -156,7 +232,17 @@ class ProcessorSettings(_message.Message):
     detect_bottom: bool
     system_type: ProcessorSettings.SystemType
     fov: FieldOfView
-    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., min_inwater_squelch: _Optional[float] = ..., max_inwater_squelch: _Optional[float] = ..., inwater_squelch: _Optional[float] = ..., squelchless_inwater_detector: bool = ..., detect_bottom: bool = ..., system_type: _Optional[_Union[ProcessorSettings.SystemType, str]] = ..., fov: _Optional[_Union[FieldOfView, str]] = ...) -> None: ...
+    def __init__(
+        self,
+        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
+        min_inwater_squelch: _Optional[float] = ...,
+        max_inwater_squelch: _Optional[float] = ...,
+        inwater_squelch: _Optional[float] = ...,
+        squelchless_inwater_detector: bool = ...,
+        detect_bottom: bool = ...,
+        system_type: _Optional[_Union[ProcessorSettings.SystemType, str]] = ...,
+        fov: _Optional[_Union[FieldOfView, str]] = ...,
+    ) -> None: ...
 
 class GetProcessorSettingsRequest(_message.Message):
     __slots__ = ()
@@ -168,7 +254,11 @@ class GetProcessorSettingsResponse(_message.Message):
     SETTINGS_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
     settings: ProcessorSettings
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ..., settings: _Optional[_Union[ProcessorSettings, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        result: _Optional[_Union[RequestResult, _Mapping]] = ...,
+        settings: _Optional[_Union[ProcessorSettings, _Mapping]] = ...,
+    ) -> None: ...
 
 class SetFieldOfViewRequest(_message.Message):
     __slots__ = ("fov",)
@@ -180,7 +270,9 @@ class SetFieldOfViewResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...
 
 class SetBottomDetectionRequest(_message.Message):
     __slots__ = ("enable_bottom_detection",)
@@ -192,7 +284,9 @@ class SetBottomDetectionResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...
 
 class SetInWaterSquelchRequest(_message.Message):
     __slots__ = ("new_squelch_val",)
@@ -204,7 +298,9 @@ class SetInWaterSquelchResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...
 
 class SetSquelchlessInWaterDetectorRequest(_message.Message):
     __slots__ = ("enable_squelchless_detection",)
@@ -216,7 +312,9 @@ class SetSquelchlessInWaterDetectorResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...
 
 class VesselInfo(_message.Message):
     __slots__ = ("draft", "keel_offset")
@@ -224,7 +322,9 @@ class VesselInfo(_message.Message):
     KEEL_OFFSET_FIELD_NUMBER: _ClassVar[int]
     draft: float
     keel_offset: float
-    def __init__(self, draft: _Optional[float] = ..., keel_offset: _Optional[float] = ...) -> None: ...
+    def __init__(
+        self, draft: _Optional[float] = ..., keel_offset: _Optional[float] = ...
+    ) -> None: ...
 
 class GetVesselInfoRequest(_message.Message):
     __slots__ = ()
@@ -236,7 +336,11 @@ class GetVesselInfoResponse(_message.Message):
     INFO_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
     info: VesselInfo
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ..., info: _Optional[_Union[VesselInfo, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        result: _Optional[_Union[RequestResult, _Mapping]] = ...,
+        info: _Optional[_Union[VesselInfo, _Mapping]] = ...,
+    ) -> None: ...
 
 class SetDraftRequest(_message.Message):
     __slots__ = ("new_draft",)
@@ -248,7 +352,9 @@ class SetDraftResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...
 
 class SetKeelOffsetRequest(_message.Message):
     __slots__ = ("new_keel_offset",)
@@ -260,4 +366,6 @@ class SetKeelOffsetResponse(_message.Message):
     __slots__ = ("result",)
     RESULT_FIELD_NUMBER: _ClassVar[int]
     result: RequestResult
-    def __init__(self, result: _Optional[_Union[RequestResult, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, result: _Optional[_Union[RequestResult, _Mapping]] = ...
+    ) -> None: ...

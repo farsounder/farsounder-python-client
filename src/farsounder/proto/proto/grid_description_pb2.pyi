@@ -13,6 +13,7 @@ class GridDescription(_message.Message):
         __slots__ = ()
         kFixed: _ClassVar[GridDescription.GridMode]
         OBSELETE_kAlternating: _ClassVar[GridDescription.GridMode]
+
     kFixed: GridDescription.GridMode
     OBSELETE_kAlternating: GridDescription.GridMode
     MODE_FIELD_NUMBER: _ClassVar[int]
@@ -23,4 +24,10 @@ class GridDescription(_message.Message):
     hor_angles: _containers.RepeatedScalarFieldContainer[float]
     ver_angles: _containers.RepeatedScalarFieldContainer[float]
     max_range: float
-    def __init__(self, mode: _Optional[_Union[GridDescription.GridMode, str]] = ..., hor_angles: _Optional[_Iterable[float]] = ..., ver_angles: _Optional[_Iterable[float]] = ..., max_range: _Optional[float] = ...) -> None: ...
+    def __init__(
+        self,
+        mode: _Optional[_Union[GridDescription.GridMode, str]] = ...,
+        hor_angles: _Optional[_Iterable[float]] = ...,
+        ver_angles: _Optional[_Iterable[float]] = ...,
+        max_range: _Optional[float] = ...,
+    ) -> None: ...

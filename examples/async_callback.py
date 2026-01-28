@@ -49,7 +49,10 @@ async def main() -> None:
         print("Timeout waiting for vessel info:", exc)
         return
 
-    print("Processor settings:", settings.result.code if settings.HasField("result") else None)
+    print(
+        "Processor settings:",
+        settings.result.code if settings.HasField("result") else None,
+    )
     print("Vessel info:", vessel.info if vessel.HasField("info") else None)
 
     print("Listening for messages. Press Ctrl+C to stop.")

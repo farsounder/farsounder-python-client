@@ -8,7 +8,12 @@ import zmq.asyncio
 from google.protobuf.message import Message
 
 from farsounder.proto.proto import nav_api_pb2 as nav_api
-from farsounder.client.config import ClientConfig, ReqRepEndpoint, build_config, resolve_reqrep_port
+from farsounder.client.config import (
+    ClientConfig,
+    ReqRepEndpoint,
+    build_config,
+    resolve_reqrep_port,
+)
 
 ResponseT = TypeVar("ResponseT", bound=Message)
 
@@ -294,4 +299,6 @@ async def get_vessel_info(
         config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
     )
     request = nav_api.GetVesselInfoRequest()
-    return await _request(config, "GetVesselInfo", request, nav_api.GetVesselInfoResponse)
+    return await _request(
+        config, "GetVesselInfo", request, nav_api.GetVesselInfoResponse
+    )
