@@ -60,3 +60,6 @@ to request/reply calls:
 ```
 uv run examples/simulated_backend.py
 ```
+
+Note: the `examples/` directory is not installed with `uv add farsounder`.
+Clone the repo to run the examples locally.
