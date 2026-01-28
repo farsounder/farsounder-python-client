@@ -1,0 +1,26 @@
+[project]
+name = "farsounder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Heath Henley", email = "heath.henley@farsounder.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+]
+
+[project.scripts]
+farsounder = "farsounder:main"
+gen-protos = "farsounder.tools.gen_protos:main"
+
+[dependency-groups]
+dev = [
+    "grpcio-tools",
+    "protobuf",
+    "ruff>=0.14.14",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
