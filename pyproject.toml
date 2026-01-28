@@ -20,6 +20,7 @@ gen-protos = "farsounder.tools.gen_protos:main"
 [dependency-groups]
 dev = [
     "grpcio-tools",
+    "pytest",
     "ruff>=0.14.14",
 ]
 

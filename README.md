@@ -51,3 +51,12 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+## Simulated backend
+
+You can run a local simulated backend that publishes dummy messages and responds
+to request/reply calls:
+
+```
+uv run examples/simulated_backend.py
+```
