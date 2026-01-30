@@ -52,10 +52,10 @@ async def _request(
         socket.connect(f"tcp://{config.host}:{port}")
         await socket.send(request.SerializeToString())
         try:
-            data = await asyncio.wait_for(socket.recv(), timeout=config.timeout_s)
+            data = await asyncio.wait_for(socket.recv(), timeout=config.timeout_seconds)
         except asyncio.TimeoutError as exc:
             raise RequestTimeoutError(
-                f"Timeout waiting for {endpoint} after {config.timeout_s:.1f}s"
+                f"Timeout waiting for {endpoint} after {config.timeout_seconds:.1f}s"
             ) from exc
     finally:
         socket.close(linger=0)

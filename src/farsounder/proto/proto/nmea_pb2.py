@@ -19,8 +19,6 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-
-
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b"\n\x10proto/nmea.proto\x12\nproto.nmea\x1a\x10proto/time.proto\"e\n\x08NmeaData\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12'\n\rplayback_time\x18\x03 \x01(\x0b\x32\x10.proto.time.Time\x12\x10\n\x08sentence\x18\x02 \x01(\tB\x02H\x03"
 )

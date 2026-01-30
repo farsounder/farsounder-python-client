@@ -6,10 +6,10 @@ import time
 from farsounder import (
     build_config,
     get_processor_settings,
+    nav_api_pb2,
     subscribe,
     RequestTimeoutError,
 )
-from farsounder.proto.proto import nav_api_pb2
 
 
 def on_hydrophone(message: nav_api_pb2.HydrophoneData) -> None:
@@ -34,6 +34,7 @@ async def _run_async(stop_event: threading.Event) -> None:
     config = build_config(
         host="127.0.0.1",
         subscribe=["HydrophoneData", "ProcessorSettings", "TargetData"],
+        timeout_seconds=10.0,
     )
 
     sub = subscribe(config)

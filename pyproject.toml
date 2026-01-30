@@ -1,20 +1,18 @@
 [project]
 name = "farsounder"
 version = "0.1.0"
-description = "Add your description here"
+description = "Python client for FarSounder's protobuf over ZeroMQ API"
 readme = "README.md"
 authors = [
-    { name = "Heath Henley", email = "heath.henley@farsounder.com" }
+    { name = "FarSounder", email = "sw@farsounder.com" }
 ]
 requires-python = ">=3.13"
 dependencies = [
     "protobuf",
     "pyzmq",
-    "tornado>=6.5.4",
 ]
 
 [project.scripts]
-farsounder = "farsounder:main"
 gen-protos = "farsounder.tools.gen_protos:main"
 
 [dependency-groups]

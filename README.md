@@ -1,22 +1,16 @@
-# farsounder-python
+# SDK Client for live FarSounder data
 
-Python client SDK for the Farsounder APIs.
-
-## Protobuf stubs
-
-Protobuf sources live in `proto/`. Generate Python stubs with:
-
-```
-uv run --group dev gen-protos
-```
-
-Or:
-
-```
-uv run tools/gen_protos.py
-```
+Python client to get live data from the the live zeromq/protobuf API.
 
 ## Usage
+
+Install:
+```
+uv add farsounder
+```
+(or use pip)
+
+Then - for example to subscribe to `TargetData` messages:
 
 ```python
 import asyncio
@@ -68,3 +62,27 @@ uv run examples/simulated_backend.py
 
 Note: the `examples/` directory is not installed with `uv add farsounder`.
 Clone the repo to run the examples locally.
+
+# Development
+
+## Re-generate Protobuf stubs
+
+Protobuf sources live in `proto/`. Generate Python stubs with:
+
+```
+uv run --group dev gen-protos
+```
+
+Or:
+
+```
+uv run tools/gen_protos.py
+```
+
+## Tests
+
+Run tests with:
+
+```
+uv run --group dev pytest
+```

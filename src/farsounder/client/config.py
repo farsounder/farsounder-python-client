@@ -56,7 +56,7 @@ class ClientConfig:
         Port mapping for request-reply endpoints.
     callback_executor
         Whether to run sync callbacks in a thread pool or inline.
-    timeout_s
+    timeout_seconds
         Request-reply timeout in seconds.
     """
 
@@ -65,7 +65,7 @@ class ClientConfig:
     pubsub_ports: dict[PubSubMessage, int]
     reqrep_ports: dict[ReqRepEndpoint, int]
     callback_executor: Literal["threadpool", "inline"]
-    timeout_s: float
+    timeout_seconds: float
 
 
 def build_config(
@@ -73,7 +73,7 @@ def build_config(
     subscribe: Iterable[PubSubMessage] | None = None,
     port_overrides: Mapping[str, int] | None = None,
     callback_executor: Literal["threadpool", "inline"] = "threadpool",
-    timeout_s: float = 2.0,
+    timeout_seconds: float = 2.0,
 ) -> ClientConfig:
     """Build a client configuration.
 
@@ -89,7 +89,7 @@ def build_config(
         pub-sub message name or request-reply endpoint name.
     callback_executor
         Whether to run sync callbacks in a thread pool or inline.
-    timeout_s
+    timeout_seconds
         Request-reply timeout in seconds.
 
     Returns
@@ -121,7 +121,7 @@ def build_config(
         pubsub_ports=pubsub_ports,
         reqrep_ports=reqrep_ports,
         callback_executor=callback_executor,
-        timeout_s=timeout_s,
+        timeout_seconds=timeout_seconds,
     )
 
 

@@ -34,6 +34,12 @@ _PROTO_EXPORTS = {
 }
 
 
+# This lazy import pattern is so that the gen-protos tools works even if
+# there are no proto modules generated yet (it otherwise tries to import
+# them and they possibly don't exist yet). I decided to check the generated
+# stubs into the repo, instead of generating them on the fly, so it shouldn't
+# really matter for the exising protos. If we were to add one though, this
+# will make sure gen-protos works.
 def __getattr__(name: str):
     if name in _CLIENT_EXPORTS:
         from farsounder import client
@@ -48,7 +54,3 @@ def __getattr__(name: str):
 
 def __dir__() -> list[str]:
     return sorted(__all__ + list(_PROTO_EXPORTS))
-
-
-def main() -> None:
-    print("Hello from farsounder!")

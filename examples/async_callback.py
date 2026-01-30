@@ -30,6 +30,7 @@ async def main() -> None:
     config = build_config(
         host="127.0.0.1",
         subscribe=["TargetData", "ProcessorSettings"],
+        timeout_seconds=10.0,
     )
 
     sub = subscribe(config)
