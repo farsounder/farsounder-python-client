@@ -21,6 +21,8 @@ ReqRepEndpoint = Literal[
     "SetKeelOffset",
 ]
 
+RestEndpoint = Literal["GetHistoryData",]
+
 PUBSUB_DEFAULT_PORTS: dict[PubSubMessage, int] = {
     "HydrophoneData": 61501,
     "TargetData": 61502,
@@ -39,6 +41,10 @@ REQREP_DEFAULT_PORTS: dict[ReqRepEndpoint, int] = {
     "SetKeelOffset": 60508,
 }
 
+REST_DEFAULT_PORTS: dict[RestEndpoint, int] = {
+    "GetHistoryData": 3000,
+}
+
 
 @dataclass(frozen=True)
 class ClientConfig:
@@ -54,6 +60,8 @@ class ClientConfig:
         Port mapping for pub-sub message types.
     reqrep_ports
         Port mapping for request-reply endpoints.
+    rest_ports
+        Port mapping for REST endpoints.
     callback_executor
         Whether to run sync callbacks in a thread pool or inline.
     timeout_seconds
@@ -64,6 +72,7 @@ class ClientConfig:
     subscribe: tuple[PubSubMessage, ...]
     pubsub_ports: dict[PubSubMessage, int]
     reqrep_ports: dict[ReqRepEndpoint, int]
+    rest_ports: dict[RestEndpoint, int]
     callback_executor: Literal["threadpool", "inline"]
     timeout_seconds: float
 
@@ -86,7 +95,8 @@ def build_config(
         messages.
     port_overrides
         Mapping of message or endpoint name to port number. Keys can be any
-        pub-sub message name or request-reply endpoint name.
+        pub-sub message name, request-reply endpoint name, or REST endpoint
+        name such as GetHistoryData.
     callback_executor
         Whether to run sync callbacks in a thread pool or inline.
     timeout_seconds
@@ -100,6 +110,7 @@ def build_config(
 
     pubsub_ports = dict(PUBSUB_DEFAULT_PORTS)
     reqrep_ports = dict(REQREP_DEFAULT_PORTS)
+    rest_ports = dict(REST_DEFAULT_PORTS)
 
     if port_overrides:
         for key, port in port_overrides.items():
@@ -107,6 +118,8 @@ def build_config(
                 pubsub_ports[key] = port
             elif key in reqrep_ports:
                 reqrep_ports[key] = port
+            elif key in rest_ports:
+                rest_ports[key] = port
             else:
                 raise ValueError(f"Unknown port override key: {key}")
 
@@ -120,6 +133,7 @@ def build_config(
         subscribe=subscribe_list,
         pubsub_ports=pubsub_ports,
         reqrep_ports=reqrep_ports,
+        rest_ports=rest_ports,
         callback_executor=callback_executor,
         timeout_seconds=timeout_seconds,
     )
@@ -135,3 +149,9 @@ def resolve_reqrep_port(config: ClientConfig, endpoint: ReqRepEndpoint) -> int:
     """Resolve the port for a request-reply endpoint."""
 
     return config.reqrep_ports[endpoint]
+
+
+def resolve_rest_port(config: ClientConfig, endpoint: RestEndpoint) -> int:
+    """Resolve the port for a REST endpoint."""
+
+    return config.rest_ports[endpoint]

@@ -6,11 +6,15 @@ __all__ = [
     "build_config",
     "subscribe",
     "get_processor_settings",
+    "get_history_data",
     "set_field_of_view",
     "set_bottom_detection",
     "set_inwater_squelch",
     "set_squelchless_inwater_detector",
     "get_vessel_info",
+    "HistoryData",
+    "GriddedBottomDetection",
+    "GriddedInwaterDetection",
 ]
 
 _CLIENT_EXPORTS = {
@@ -22,11 +26,15 @@ _CLIENT_EXPORTS = {
     "build_config",
     "subscribe",
     "get_processor_settings",
+    "get_history_data",
     "set_field_of_view",
     "set_bottom_detection",
     "set_inwater_squelch",
     "set_squelchless_inwater_detector",
     "get_vessel_info",
+    "HistoryData",
+    "GriddedBottomDetection",
+    "GriddedInwaterDetection",
 }
 
 _PROTO_EXPORTS = {

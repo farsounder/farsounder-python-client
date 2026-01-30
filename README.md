@@ -43,6 +43,15 @@ async def main() -> None:
     settings = await get_processor_settings(config)
     print(settings)
 
+    # History data
+    history = await get_history_data(
+        config,
+        latitude=41.7223,
+        longitude=-71.35,
+        radius_meters=500,
+    )
+    print(history.gridded_bottom_detections)
+
     await asyncio.sleep(1.0)
     await sub.stop()
 

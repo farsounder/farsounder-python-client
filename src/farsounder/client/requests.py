@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Mapping, TypeVar
+from typing import TypeVar
 
+import httpx
 import zmq
 import zmq.asyncio
 from google.protobuf.message import Message
@@ -11,32 +12,16 @@ from farsounder.proto.proto import nav_api_pb2 as nav_api
 from farsounder.client.config import (
     ClientConfig,
     ReqRepEndpoint,
-    build_config,
     resolve_reqrep_port,
+    resolve_rest_port,
 )
+from farsounder.client.history_types import HistoryData
 
 ResponseT = TypeVar("ResponseT", bound=Message)
 
 
 class RequestTimeoutError(TimeoutError):
     """Request-reply operation timed out."""
-
-
-def _ensure_config(
-    config: ClientConfig | None,
-    *,
-    host: str,
-    port_overrides: Mapping[str, int] | None,
-    timeout_s: float,
-) -> ClientConfig:
-    if config is not None:
-        return config
-    return build_config(
-        host=host,
-        subscribe=(),
-        port_overrides=port_overrides,
-        timeout_s=timeout_s,
-    )
 
 
 async def _request(
@@ -66,24 +51,14 @@ async def _request(
 
 
 async def get_processor_settings(
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.GetProcessorSettingsResponse:
     """Request the current processor settings.
 
     Parameters
     ----------
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -91,9 +66,6 @@ async def get_processor_settings(
         Response containing the current processor settings.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.GetProcessorSettingsRequest()
     return await _request(
         config,
@@ -105,11 +77,7 @@ async def get_processor_settings(
 
 async def set_field_of_view(
     fov: nav_api.FieldOfView,
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.SetFieldOfViewResponse:
     """Request a change to the sonar FieldOfView.
 
@@ -118,13 +86,7 @@ async def set_field_of_view(
     fov
         Desired field of view value.
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -132,9 +94,6 @@ async def set_field_of_view(
         Response describing the result of the request.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.SetFieldOfViewRequest(fov=fov)
     return await _request(
         config,
@@ -146,11 +105,7 @@ async def set_field_of_view(
 
 async def set_bottom_detection(
     enable: bool,
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.SetBottomDetectionResponse:
     """Enable or disable bottom detection.
 
@@ -159,13 +114,7 @@ async def set_bottom_detection(
     enable
         Whether to enable bottom detection.
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -173,9 +122,6 @@ async def set_bottom_detection(
         Response describing the result of the request.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.SetBottomDetectionRequest(enable_bottom_detection=enable)
     return await _request(
         config,
@@ -187,11 +133,7 @@ async def set_bottom_detection(
 
 async def set_inwater_squelch(
     value: float,
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.SetInWaterSquelchResponse:
     """Set the in-water squelch value.
 
@@ -200,13 +142,7 @@ async def set_inwater_squelch(
     value
         Squelch value to set.
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -214,9 +150,6 @@ async def set_inwater_squelch(
         Response describing the result of the request.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.SetInWaterSquelchRequest(new_squelch_val=value)
     return await _request(
         config,
@@ -228,11 +161,7 @@ async def set_inwater_squelch(
 
 async def set_squelchless_inwater_detector(
     enable: bool,
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.SetSquelchlessInWaterDetectorResponse:
     """Enable or disable the squelchless in-water detector.
 
@@ -241,13 +170,7 @@ async def set_squelchless_inwater_detector(
     enable
         Whether to enable squelchless detection.
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -255,9 +178,6 @@ async def set_squelchless_inwater_detector(
         Response describing the result of the request.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.SetSquelchlessInWaterDetectorRequest(
         enable_squelchless_detection=enable
     )
@@ -270,24 +190,14 @@ async def set_squelchless_inwater_detector(
 
 
 async def get_vessel_info(
-    config: ClientConfig | None = None,
-    *,
-    host: str = "127.0.0.1",
-    port_overrides: Mapping[str, int] | None = None,
-    timeout_s: float = 2.0,
+    config: ClientConfig,
 ) -> nav_api.GetVesselInfoResponse:
     """Request the current vessel info.
 
     Parameters
     ----------
     config
-        Optional pre-built configuration.
-    host
-        Hostname or IP address for the request socket.
-    port_overrides
-        Mapping of endpoint name to port number.
-    timeout_s
-        Timeout for the request-reply exchange, in seconds.
+        Client configuration.
 
     Returns
     -------
@@ -295,10 +205,106 @@ async def get_vessel_info(
         Response containing the vessel info.
     """
 
-    config = _ensure_config(
-        config, host=host, port_overrides=port_overrides, timeout_s=timeout_s
-    )
     request = nav_api.GetVesselInfoRequest()
     return await _request(
         config, "GetVesselInfo", request, nav_api.GetVesselInfoResponse
     )
+
+
+def _build_history_params(
+    *,
+    latitude: float,
+    longitude: float,
+    radius_meters: float,
+    since_timestamp_utc: float | None,
+    tide_corrected_only: bool,
+    skip: int,
+    limit: int,
+    include_count: bool,
+) -> dict[str, str]:
+    params: dict[str, str] = {
+        "latitude": str(latitude),
+        "longitude": str(longitude),
+        "radius_meters": str(radius_meters),
+        "tide_corrected_only": str(tide_corrected_only).lower(),
+        "skip": str(skip),
+        "limit": str(limit),
+        "include_count": str(include_count).lower(),
+    }
+    if since_timestamp_utc is not None:
+        params["since_timestamp_utc"] = str(since_timestamp_utc)
+    return params
+
+
+async def get_history_data(
+    config: ClientConfig,
+    *,
+    latitude: float,
+    longitude: float,
+    radius_meters: float = 500,
+    since_timestamp_utc: float | None = None,
+    tide_corrected_only: bool = False,
+    skip: int = 0,
+    limit: int = 50000,
+    include_count: bool = True,
+) -> HistoryData:
+    """Request history data from the REST API.
+
+    Parameters
+    ----------
+    config
+        Client configuration.
+    latitude
+        Latitude in decimal degrees.
+    longitude
+        Longitude in decimal degrees.
+    radius_meters
+        Query radius in meters.
+    since_timestamp_utc
+        Return data collected or updated since this UTC epoch time.
+    tide_corrected_only
+        Only return tide corrected seafloor detections.
+    skip
+        Number of records to skip.
+    limit
+        Maximum number of records to return.
+    include_count
+        Include the total count in the response header.
+
+    Returns
+    -------
+    HistoryData
+        Parsed history data response.
+    """
+
+    port = resolve_rest_port(config, "GetHistoryData")
+    params = _build_history_params(
+        latitude=latitude,
+        longitude=longitude,
+        radius_meters=radius_meters,
+        since_timestamp_utc=since_timestamp_utc,
+        tide_corrected_only=tide_corrected_only,
+        skip=skip,
+        limit=limit,
+        include_count=include_count,
+    )
+    url = f"http://{config.host}:{port}/api/history_data"
+    try:
+        async with httpx.AsyncClient(timeout=config.timeout_seconds) as client:
+            response = await client.get(url, params=params)
+        response.raise_for_status()
+    except httpx.ConnectError as exc:
+        raise httpx.ConnectError(
+            f"Failed to connect to {url}, is the server running?"
+        ) from exc
+
+    history_count = None
+    if include_count:
+        header_val = response.headers.get("X-Grids-Count")
+        if header_val is not None:
+            try:
+                history_count = int(header_val)
+            except ValueError:
+                history_count = None
+    payload = response.json()
+    return HistoryData.from_dict(payload, history_count=history_count)

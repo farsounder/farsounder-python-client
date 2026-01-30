@@ -4,6 +4,7 @@ import sys
 from farsounder import (
     build_config,
     get_processor_settings,
+    get_history_data,
     get_vessel_info,
     nav_api_pb2,
     subscribe,
@@ -13,7 +14,7 @@ from farsounder import (
 
 async def on_targets(message: nav_api_pb2.TargetData) -> None:
     print("Got TargetData message!")
-    print("Targets ping:", len(message.groups))
+    print("Targets this ping:", len(message.groups))
     print()
 
 
@@ -49,6 +50,20 @@ async def main() -> None:
     except RequestTimeoutError as exc:
         print("Timeout waiting for vessel info:", exc)
         return
+
+    try:
+        history = await get_history_data(
+            config,
+            latitude=41.6538,
+            longitude=-71.3712,
+            radius_meters=500,
+        )
+        print("Got history data!")
+        print("Bottom detections:", len(history.gridded_bottom_detections))
+        print("Inwater detections:", len(history.gridded_inwater_detections))
+    except Exception as exc:
+        print("Error getting history data!")
+        print(exc)
 
     print(
         "Processor settings:",

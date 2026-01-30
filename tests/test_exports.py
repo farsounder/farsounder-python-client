@@ -7,6 +7,12 @@ def test_request_timeout_export() -> None:
     assert issubclass(RequestTimeoutError, TimeoutError)
 
 
+def test_history_type_export() -> None:
+    from farsounder import HistoryData
+
+    assert HistoryData.__name__ == "HistoryData"
+
+
 def test_nav_api_pb2_export() -> None:
     try:
         from farsounder import nav_api_pb2

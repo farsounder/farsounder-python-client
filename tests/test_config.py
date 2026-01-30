@@ -17,11 +17,16 @@ def test_build_config_defaults() -> None:
 def test_build_config_overrides() -> None:
     config = build_config(
         subscribe=["TargetData"],
-        port_overrides={"TargetData": 62000, "GetVesselInfo": 60001},
+        port_overrides={
+            "TargetData": 62000,
+            "GetVesselInfo": 60001,
+            "GetHistoryData": 3001,
+        },
     )
     assert config.subscribe == ("TargetData",)
     assert config.pubsub_ports["TargetData"] == 62000
     assert config.reqrep_ports["GetVesselInfo"] == 60001
+    assert config.rest_ports["GetHistoryData"] == 3001
 
 
 def test_build_config_unknown_override() -> None:
