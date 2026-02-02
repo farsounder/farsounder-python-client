@@ -294,6 +294,10 @@ async def get_history_data(
         raise httpx.ConnectError(
             f"Failed to connect to {url}, is the server running?"
         ) from exc
+    except httpx.ConnectTimeout as exc:
+        raise RequestTimeoutError(
+            f"Timeout waiting for {url} after {config.timeout_seconds:.1f}s"
+        ) from exc
 
     history_count = None
     if include_count:

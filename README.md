@@ -21,28 +21,40 @@ from farsounder.proto import nav_api_pb2
 
 
 async def main() -> None:
+
+    # Build the configuration:
+    # - where is the api running?
+    # - what messages do you care about subscribing to?
+    # - if ports are changed, they can overridden here
     cfg = config.build_config(
         host="127.0.0.1",
         subscribe=["TargetData"],
     )
 
-    sub = subscriber.subscribe(config)
 
+    # Pub/Sub
+    sub = subscriber.subscribe(cfg)
+    # A callback to run when there are new target data messages
+    # - don't do a lot of processing in here could block event
+    #   loop
     def on_targets(message: nav_api_pb2.TargetData) -> None:
         print("Got a TargetData!")
         print("Targets:", len(message.groups))
 
-    # Pub/Sub
+    # register the callback(s)
     sub.on("TargetData", on_targets)
+
+    # start the receive loop
     await sub.start()
 
     # Req/rep
-    settings = await requests.get_processor_settings(config)
+    # for each of the request / reply endpoints - there are specific
+    # get/set functions
+    settings = await requests.get_processor_settings(cfg)
     print(settings)
 
-    # History data
     history = await requests.get_history_data(
-        config,
+        cfg,
         latitude=41.7223,
         longitude=-71.35,
         radius_meters=500,
@@ -50,6 +62,8 @@ async def main() -> None:
     print(history.gridded_bottom_detections)
 
     await asyncio.sleep(1.0)
+
+    # Stop receive loop
     await sub.stop()
 
 

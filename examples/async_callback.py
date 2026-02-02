@@ -33,13 +33,6 @@ async def main() -> None:
         settings = await requests.get_processor_settings(cfg)
     except exceptions.RequestTimeoutError as exc:
         print("Timeout waiting for processor settings:", exc)
-        return
-
-    try:
-        vessel = await requests.get_vessel_info(cfg)
-    except exceptions.RequestTimeoutError as exc:
-        print("Timeout waiting for vessel info:", exc)
-        return
 
     try:
         history = await requests.get_history_data(
@@ -51,15 +44,16 @@ async def main() -> None:
         print("Got history data!")
         print("Bottom detections:", len(history.gridded_bottom_detections))
         print("Inwater detections:", len(history.gridded_inwater_detections))
+    except exceptions.RequestTimeoutError as exc:
+        print("Timeout waiting for history data:", exc)
     except Exception as exc:
         print("Error getting history data!")
         print(exc)
 
     print(
         "Processor settings:",
-        settings.result.code if settings.HasField("result") else None,
+        settings.result.code if settings and settings.HasField("result") else None,
     )
-    print("Vessel info:", vessel.info if vessel.HasField("info") else None)
 
     print("Listening for messages. Press Ctrl+C to stop.")
     try:
