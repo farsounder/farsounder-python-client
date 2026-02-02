@@ -23,7 +23,6 @@ class ArrayData(_message.Message):
         COMPLEX64: _ClassVar[ArrayData.Type]
         COMPLEX128: _ClassVar[ArrayData.Type]
         BOOL: _ClassVar[ArrayData.Type]
-
     BYTE: ArrayData.Type
     INT16: ArrayData.Type
     UINT16: ArrayData.Type
@@ -40,7 +39,6 @@ class ArrayData(_message.Message):
         __slots__ = ()
         ROW_MAJOR: _ClassVar[ArrayData.Order]
         COLUMN_MAJOR: _ClassVar[ArrayData.Order]
-
     ROW_MAJOR: ArrayData.Order
     COLUMN_MAJOR: ArrayData.Order
     DIMS_FIELD_NUMBER: _ClassVar[int]
@@ -51,10 +49,4 @@ class ArrayData(_message.Message):
     type: ArrayData.Type
     order: ArrayData.Order
     data: bytes
-    def __init__(
-        self,
-        dims: _Optional[_Iterable[int]] = ...,
-        type: _Optional[_Union[ArrayData.Type, str]] = ...,
-        order: _Optional[_Union[ArrayData.Order, str]] = ...,
-        data: _Optional[bytes] = ...,
-    ) -> None: ...
+    def __init__(self, dims: _Optional[_Iterable[int]] = ..., type: _Optional[_Union[ArrayData.Type, str]] = ..., order: _Optional[_Union[ArrayData.Order, str]] = ..., data: _Optional[bytes] = ...) -> None: ...

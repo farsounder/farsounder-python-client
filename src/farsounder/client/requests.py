@@ -15,13 +15,10 @@ from farsounder.client.config import (
     resolve_reqrep_port,
     resolve_rest_port,
 )
+from farsounder.client.exceptions import RequestTimeoutError
 from farsounder.client.history_types import HistoryData
 
 ResponseT = TypeVar("ResponseT", bound=Message)
-
-
-class RequestTimeoutError(TimeoutError):
-    """Request-reply operation timed out."""
 
 
 async def _request(

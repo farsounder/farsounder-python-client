@@ -1,4 +1,8 @@
-"""Protobuf package shim for generated modules."""
+"""Protobuf package shim for generated modules.
+
+Generated stubs import from a top-level `proto` package, so we provide a
+lightweight alias that points at `farsounder.proto.proto`.
+"""
 
 from __future__ import annotations
 
@@ -17,18 +21,8 @@ if _proto_pkg_name not in sys.modules:
     _module.__spec__ = ModuleSpec(_proto_pkg_name, loader=None, is_package=True)
     sys.modules[_proto_pkg_name] = _module
 
-time_pb2 = import_module("farsounder.proto.proto.time_pb2")
-array_pb2 = import_module("farsounder.proto.proto.array_pb2")
-grid_description_pb2 = import_module("farsounder.proto.proto.grid_description_pb2")
-nmea_pb2 = import_module("farsounder.proto.proto.nmea_pb2")
-nav_info_pb2 = import_module("farsounder.proto.proto.nav_info_pb2")
 nav_api_pb2 = import_module("farsounder.proto.proto.nav_api_pb2")
 
 __all__ = [
     "nav_api_pb2",
-    "nav_info_pb2",
-    "array_pb2",
-    "grid_description_pb2",
-    "nmea_pb2",
-    "time_pb2",
 ]

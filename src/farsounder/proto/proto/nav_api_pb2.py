@@ -4,107 +4,100 @@
 # source: proto/nav_api.proto
 # Protobuf Python Version: 6.31.1
 """Generated protocol buffer code."""
-
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
-
 _runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC, 6, 31, 1, "", "proto/nav_api.proto"
+    _runtime_version.Domain.PUBLIC,
+    6,
+    31,
+    1,
+    '',
+    'proto/nav_api.proto'
 )
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x13proto/nav_api.proto\x12\rproto.nav_api\x1a\x11proto/array.proto\x1a\x1cproto/grid_description.proto\x1a\x14proto/nav_info.proto\x1a\x10proto/time.proto"\x8e\x02\n\rRequestResult\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x35\n\x04\x63ode\x18\x02 \x01(\x0e\x32\'.proto.nav_api.RequestResult.ResultCode\x12\x15\n\rresult_detail\x18\x03 \x01(\t"\x8e\x01\n\nResultCode\x12\x0c\n\x08kSuccess\x10\x00\x12\x11\n\rkUnknownError\x10\x01\x12\x19\n\x15kOperationUnavailable\x10\x02\x12\x18\n\x14kParameterOutOfRange\x10\x03\x12\x15\n\x11kParameterMissing\x10\x04\x12\x13\n\x0fkInvalidRequest\x10\x05"\xb5\x01\n\x0eHydrophoneData\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12.\n\x0eraw_timeseries\x18\x02 \x01(\x0b\x32\x16.proto.array.ArrayData\x12\x16\n\x0enum_hor_phones\x18\x03 \x01(\x05\x12\x16\n\x0enum_ver_phones\x18\x04 \x01(\x05\x12\x0e\n\x06serial\x18\x05 \x01(\t\x12\x13\n\x0btransmit_id\x18\x06 \x01(\t"\xcb\x02\n\nTargetData\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x0e\n\x06serial\x18\x02 \x01(\t\x12(\n\x07heading\x18\x04 \x01(\x0b\x32\x17.proto.nav_info.Heading\x12*\n\x08position\x18\x05 \x01(\x0b\x32\x18.proto.nav_info.Position\x12"\n\x06\x62ottom\x18\x06 \x03(\x0b\x32\x12.proto.nav_api.Bin\x12$\n\x06groups\x18\x07 \x03(\x0b\x32\x14.proto.nav_api.Group\x12\x41\n\x10grid_description\x18\x08 \x01(\x0b\x32\'.proto.grid_description.GridDescription\x12\x11\n\tmax_depth\x18\t \x01(\x01\x12\x17\n\x0fmax_range_index\x18\n \x01(\x05"\x9e\x01\n\x03\x42in\x12\x11\n\thor_index\x18\x01 \x01(\x05\x12\x11\n\tver_index\x18\x02 \x01(\x05\x12\x13\n\x0brange_index\x18\x03 \x01(\x05\x12\x13\n\x0b\x63ross_range\x18\x04 \x01(\x02\x12\x12\n\ndown_range\x18\x05 \x01(\x02\x12\r\n\x05\x64\x65pth\x18\x06 \x01(\x02\x12\x10\n\x08strength\x18\x07 \x01(\x02\x12\x12\n\nconfidence\x18\x08 \x01(\x02")\n\x05Group\x12 \n\x04\x62ins\x18\x01 \x03(\x0b\x32\x12.proto.nav_api.Bin"\x8c\x03\n\x11ProcessorSettings\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x1b\n\x13min_inwater_squelch\x18\x02 \x01(\x02\x12\x1b\n\x13max_inwater_squelch\x18\x03 \x01(\x02\x12\x17\n\x0finwater_squelch\x18\x04 \x01(\x02\x12$\n\x1csquelchless_inwater_detector\x18\x05 \x01(\x08\x12\x15\n\rdetect_bottom\x18\x06 \x01(\x08\x12H\n\x0bsystem_type\x18\x07 \x01(\x0e\x32+.proto.nav_api.ProcessorSettings.SystemType:\x06kFS500\x12\x31\n\x03\x66ov\x18\x08 \x01(\x0e\x32\x1a.proto.nav_api.FieldOfView:\x08k90d500m"J\n\nSystemType\x12\n\n\x06kFS500\x10\x01\x12\x0b\n\x07kFS1000\x10\x02\x12\n\n\x06kFS350\x10\x03\x12\x17\n\x0fOBSELETE_kFS3DT\x10\x00\x1a\x02\x08\x01"\x1d\n\x1bGetProcessorSettingsRequest"\x80\x01\n\x1cGetProcessorSettingsResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\x12\x32\n\x08settings\x18\x02 \x01(\x0b\x32 .proto.nav_api.ProcessorSettings"@\n\x15SetFieldOfViewRequest\x12\'\n\x03\x66ov\x18\x01 \x01(\x0e\x32\x1a.proto.nav_api.FieldOfView"F\n\x16SetFieldOfViewResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult"<\n\x19SetBottomDetectionRequest\x12\x1f\n\x17\x65nable_bottom_detection\x18\x01 \x01(\x08"J\n\x1aSetBottomDetectionResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult"3\n\x18SetInWaterSquelchRequest\x12\x17\n\x0fnew_squelch_val\x18\x01 \x01(\x02"I\n\x19SetInWaterSquelchResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult"L\n$SetSquelchlessInWaterDetectorRequest\x12$\n\x1c\x65nable_squelchless_detection\x18\x01 \x01(\x08"U\n%SetSquelchlessInWaterDetectorResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult"0\n\nVesselInfo\x12\r\n\x05\x64raft\x18\x01 \x01(\x02\x12\x13\n\x0bkeel_offset\x18\x02 \x01(\x02"\x16\n\x14GetVesselInfoRequest"n\n\x15GetVesselInfoResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\x12\'\n\x04info\x18\x02 \x01(\x0b\x32\x19.proto.nav_api.VesselInfo"$\n\x0fSetDraftRequest\x12\x11\n\tnew_draft\x18\x01 \x01(\x02"@\n\x10SetDraftResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult"/\n\x14SetKeelOffsetRequest\x12\x17\n\x0fnew_keel_offset\x18\x01 \x01(\x02"E\n\x15SetKeelOffsetResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult*\x83\x02\n\x0b\x46ieldOfView\x12\r\n\tk120d100m\x10\x05\x12\r\n\tk120d200m\x10\x06\x12\x0c\n\x08k90d500m\x10\x07\x12\r\n\tk60d1000m\x10\x08\x12\x0c\n\x08k90d100m\x10\t\x12\x0c\n\x08k90d200m\x10\n\x12\x0c\n\x08k90d350m\x10\x0b\x12\x0c\n\x08kStandby\x10\x0c\x12\x19\n\x11OBSELETE_k90d110m\x10\x00\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k90d220m\x10\x01\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k90d330m\x10\x02\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k60d440m\x10\x03\x1a\x02\x08\x01\x12\x15\n\rOBSELETE_kAlt\x10\x04\x1a\x02\x08\x01\x42\x02H\x03'
-)
+from proto import array_pb2 as proto_dot_array__pb2
+from proto import grid_description_pb2 as proto_dot_grid__description__pb2
+from proto import nav_info_pb2 as proto_dot_nav__info__pb2
+from proto import time_pb2 as proto_dot_time__pb2
+
+
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/nav_api.proto\x12\rproto.nav_api\x1a\x11proto/array.proto\x1a\x1cproto/grid_description.proto\x1a\x14proto/nav_info.proto\x1a\x10proto/time.proto\"\x8e\x02\n\rRequestResult\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x35\n\x04\x63ode\x18\x02 \x01(\x0e\x32\'.proto.nav_api.RequestResult.ResultCode\x12\x15\n\rresult_detail\x18\x03 \x01(\t\"\x8e\x01\n\nResultCode\x12\x0c\n\x08kSuccess\x10\x00\x12\x11\n\rkUnknownError\x10\x01\x12\x19\n\x15kOperationUnavailable\x10\x02\x12\x18\n\x14kParameterOutOfRange\x10\x03\x12\x15\n\x11kParameterMissing\x10\x04\x12\x13\n\x0fkInvalidRequest\x10\x05\"\xb5\x01\n\x0eHydrophoneData\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12.\n\x0eraw_timeseries\x18\x02 \x01(\x0b\x32\x16.proto.array.ArrayData\x12\x16\n\x0enum_hor_phones\x18\x03 \x01(\x05\x12\x16\n\x0enum_ver_phones\x18\x04 \x01(\x05\x12\x0e\n\x06serial\x18\x05 \x01(\t\x12\x13\n\x0btransmit_id\x18\x06 \x01(\t\"\xcb\x02\n\nTargetData\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x0e\n\x06serial\x18\x02 \x01(\t\x12(\n\x07heading\x18\x04 \x01(\x0b\x32\x17.proto.nav_info.Heading\x12*\n\x08position\x18\x05 \x01(\x0b\x32\x18.proto.nav_info.Position\x12\"\n\x06\x62ottom\x18\x06 \x03(\x0b\x32\x12.proto.nav_api.Bin\x12$\n\x06groups\x18\x07 \x03(\x0b\x32\x14.proto.nav_api.Group\x12\x41\n\x10grid_description\x18\x08 \x01(\x0b\x32\'.proto.grid_description.GridDescription\x12\x11\n\tmax_depth\x18\t \x01(\x01\x12\x17\n\x0fmax_range_index\x18\n \x01(\x05\"\x9e\x01\n\x03\x42in\x12\x11\n\thor_index\x18\x01 \x01(\x05\x12\x11\n\tver_index\x18\x02 \x01(\x05\x12\x13\n\x0brange_index\x18\x03 \x01(\x05\x12\x13\n\x0b\x63ross_range\x18\x04 \x01(\x02\x12\x12\n\ndown_range\x18\x05 \x01(\x02\x12\r\n\x05\x64\x65pth\x18\x06 \x01(\x02\x12\x10\n\x08strength\x18\x07 \x01(\x02\x12\x12\n\nconfidence\x18\x08 \x01(\x02\")\n\x05Group\x12 \n\x04\x62ins\x18\x01 \x03(\x0b\x32\x12.proto.nav_api.Bin\"\x8c\x03\n\x11ProcessorSettings\x12\x1e\n\x04time\x18\x01 \x01(\x0b\x32\x10.proto.time.Time\x12\x1b\n\x13min_inwater_squelch\x18\x02 \x01(\x02\x12\x1b\n\x13max_inwater_squelch\x18\x03 \x01(\x02\x12\x17\n\x0finwater_squelch\x18\x04 \x01(\x02\x12$\n\x1csquelchless_inwater_detector\x18\x05 \x01(\x08\x12\x15\n\rdetect_bottom\x18\x06 \x01(\x08\x12H\n\x0bsystem_type\x18\x07 \x01(\x0e\x32+.proto.nav_api.ProcessorSettings.SystemType:\x06kFS500\x12\x31\n\x03\x66ov\x18\x08 \x01(\x0e\x32\x1a.proto.nav_api.FieldOfView:\x08k90d500m\"J\n\nSystemType\x12\n\n\x06kFS500\x10\x01\x12\x0b\n\x07kFS1000\x10\x02\x12\n\n\x06kFS350\x10\x03\x12\x17\n\x0fOBSELETE_kFS3DT\x10\x00\x1a\x02\x08\x01\"\x1d\n\x1bGetProcessorSettingsRequest\"\x80\x01\n\x1cGetProcessorSettingsResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\x12\x32\n\x08settings\x18\x02 \x01(\x0b\x32 .proto.nav_api.ProcessorSettings\"@\n\x15SetFieldOfViewRequest\x12\'\n\x03\x66ov\x18\x01 \x01(\x0e\x32\x1a.proto.nav_api.FieldOfView\"F\n\x16SetFieldOfViewResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\"<\n\x19SetBottomDetectionRequest\x12\x1f\n\x17\x65nable_bottom_detection\x18\x01 \x01(\x08\"J\n\x1aSetBottomDetectionResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\"3\n\x18SetInWaterSquelchRequest\x12\x17\n\x0fnew_squelch_val\x18\x01 \x01(\x02\"I\n\x19SetInWaterSquelchResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\"L\n$SetSquelchlessInWaterDetectorRequest\x12$\n\x1c\x65nable_squelchless_detection\x18\x01 \x01(\x08\"U\n%SetSquelchlessInWaterDetectorResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\"0\n\nVesselInfo\x12\r\n\x05\x64raft\x18\x01 \x01(\x02\x12\x13\n\x0bkeel_offset\x18\x02 \x01(\x02\"\x16\n\x14GetVesselInfoRequest\"n\n\x15GetVesselInfoResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\x12\'\n\x04info\x18\x02 \x01(\x0b\x32\x19.proto.nav_api.VesselInfo\"$\n\x0fSetDraftRequest\x12\x11\n\tnew_draft\x18\x01 \x01(\x02\"@\n\x10SetDraftResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult\"/\n\x14SetKeelOffsetRequest\x12\x17\n\x0fnew_keel_offset\x18\x01 \x01(\x02\"E\n\x15SetKeelOffsetResponse\x12,\n\x06result\x18\x01 \x01(\x0b\x32\x1c.proto.nav_api.RequestResult*\x83\x02\n\x0b\x46ieldOfView\x12\r\n\tk120d100m\x10\x05\x12\r\n\tk120d200m\x10\x06\x12\x0c\n\x08k90d500m\x10\x07\x12\r\n\tk60d1000m\x10\x08\x12\x0c\n\x08k90d100m\x10\t\x12\x0c\n\x08k90d200m\x10\n\x12\x0c\n\x08k90d350m\x10\x0b\x12\x0c\n\x08kStandby\x10\x0c\x12\x19\n\x11OBSELETE_k90d110m\x10\x00\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k90d220m\x10\x01\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k90d330m\x10\x02\x1a\x02\x08\x01\x12\x19\n\x11OBSELETE_k60d440m\x10\x03\x1a\x02\x08\x01\x12\x15\n\rOBSELETE_kAlt\x10\x04\x1a\x02\x08\x01\x42\x02H\x03')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "proto.nav_api_pb2", _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'proto.nav_api_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-    _globals["DESCRIPTOR"]._loaded_options = None
-    _globals["DESCRIPTOR"]._serialized_options = b"H\003"
-    _globals["_FIELDOFVIEW"].values_by_name["OBSELETE_k90d110m"]._loaded_options = None
-    _globals["_FIELDOFVIEW"].values_by_name[
-        "OBSELETE_k90d110m"
-    ]._serialized_options = b"\010\001"
-    _globals["_FIELDOFVIEW"].values_by_name["OBSELETE_k90d220m"]._loaded_options = None
-    _globals["_FIELDOFVIEW"].values_by_name[
-        "OBSELETE_k90d220m"
-    ]._serialized_options = b"\010\001"
-    _globals["_FIELDOFVIEW"].values_by_name["OBSELETE_k90d330m"]._loaded_options = None
-    _globals["_FIELDOFVIEW"].values_by_name[
-        "OBSELETE_k90d330m"
-    ]._serialized_options = b"\010\001"
-    _globals["_FIELDOFVIEW"].values_by_name["OBSELETE_k60d440m"]._loaded_options = None
-    _globals["_FIELDOFVIEW"].values_by_name[
-        "OBSELETE_k60d440m"
-    ]._serialized_options = b"\010\001"
-    _globals["_FIELDOFVIEW"].values_by_name["OBSELETE_kAlt"]._loaded_options = None
-    _globals["_FIELDOFVIEW"].values_by_name[
-        "OBSELETE_kAlt"
-    ]._serialized_options = b"\010\001"
-    _globals["_PROCESSORSETTINGS_SYSTEMTYPE"].values_by_name[
-        "OBSELETE_kFS3DT"
-    ]._loaded_options = None
-    _globals["_PROCESSORSETTINGS_SYSTEMTYPE"].values_by_name[
-        "OBSELETE_kFS3DT"
-    ]._serialized_options = b"\010\001"
-    _globals["_FIELDOFVIEW"]._serialized_start = 2663
-    _globals["_FIELDOFVIEW"]._serialized_end = 2922
-    _globals["_REQUESTRESULT"]._serialized_start = 128
-    _globals["_REQUESTRESULT"]._serialized_end = 398
-    _globals["_REQUESTRESULT_RESULTCODE"]._serialized_start = 256
-    _globals["_REQUESTRESULT_RESULTCODE"]._serialized_end = 398
-    _globals["_HYDROPHONEDATA"]._serialized_start = 401
-    _globals["_HYDROPHONEDATA"]._serialized_end = 582
-    _globals["_TARGETDATA"]._serialized_start = 585
-    _globals["_TARGETDATA"]._serialized_end = 916
-    _globals["_BIN"]._serialized_start = 919
-    _globals["_BIN"]._serialized_end = 1077
-    _globals["_GROUP"]._serialized_start = 1079
-    _globals["_GROUP"]._serialized_end = 1120
-    _globals["_PROCESSORSETTINGS"]._serialized_start = 1123
-    _globals["_PROCESSORSETTINGS"]._serialized_end = 1519
-    _globals["_PROCESSORSETTINGS_SYSTEMTYPE"]._serialized_start = 1445
-    _globals["_PROCESSORSETTINGS_SYSTEMTYPE"]._serialized_end = 1519
-    _globals["_GETPROCESSORSETTINGSREQUEST"]._serialized_start = 1521
-    _globals["_GETPROCESSORSETTINGSREQUEST"]._serialized_end = 1550
-    _globals["_GETPROCESSORSETTINGSRESPONSE"]._serialized_start = 1553
-    _globals["_GETPROCESSORSETTINGSRESPONSE"]._serialized_end = 1681
-    _globals["_SETFIELDOFVIEWREQUEST"]._serialized_start = 1683
-    _globals["_SETFIELDOFVIEWREQUEST"]._serialized_end = 1747
-    _globals["_SETFIELDOFVIEWRESPONSE"]._serialized_start = 1749
-    _globals["_SETFIELDOFVIEWRESPONSE"]._serialized_end = 1819
-    _globals["_SETBOTTOMDETECTIONREQUEST"]._serialized_start = 1821
-    _globals["_SETBOTTOMDETECTIONREQUEST"]._serialized_end = 1881
-    _globals["_SETBOTTOMDETECTIONRESPONSE"]._serialized_start = 1883
-    _globals["_SETBOTTOMDETECTIONRESPONSE"]._serialized_end = 1957
-    _globals["_SETINWATERSQUELCHREQUEST"]._serialized_start = 1959
-    _globals["_SETINWATERSQUELCHREQUEST"]._serialized_end = 2010
-    _globals["_SETINWATERSQUELCHRESPONSE"]._serialized_start = 2012
-    _globals["_SETINWATERSQUELCHRESPONSE"]._serialized_end = 2085
-    _globals["_SETSQUELCHLESSINWATERDETECTORREQUEST"]._serialized_start = 2087
-    _globals["_SETSQUELCHLESSINWATERDETECTORREQUEST"]._serialized_end = 2163
-    _globals["_SETSQUELCHLESSINWATERDETECTORRESPONSE"]._serialized_start = 2165
-    _globals["_SETSQUELCHLESSINWATERDETECTORRESPONSE"]._serialized_end = 2250
-    _globals["_VESSELINFO"]._serialized_start = 2252
-    _globals["_VESSELINFO"]._serialized_end = 2300
-    _globals["_GETVESSELINFOREQUEST"]._serialized_start = 2302
-    _globals["_GETVESSELINFOREQUEST"]._serialized_end = 2324
-    _globals["_GETVESSELINFORESPONSE"]._serialized_start = 2326
-    _globals["_GETVESSELINFORESPONSE"]._serialized_end = 2436
-    _globals["_SETDRAFTREQUEST"]._serialized_start = 2438
-    _globals["_SETDRAFTREQUEST"]._serialized_end = 2474
-    _globals["_SETDRAFTRESPONSE"]._serialized_start = 2476
-    _globals["_SETDRAFTRESPONSE"]._serialized_end = 2540
-    _globals["_SETKEELOFFSETREQUEST"]._serialized_start = 2542
-    _globals["_SETKEELOFFSETREQUEST"]._serialized_end = 2589
-    _globals["_SETKEELOFFSETRESPONSE"]._serialized_start = 2591
-    _globals["_SETKEELOFFSETRESPONSE"]._serialized_end = 2660
+  _globals['DESCRIPTOR']._loaded_options = None
+  _globals['DESCRIPTOR']._serialized_options = b'H\003'
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d110m"]._loaded_options = None
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d110m"]._serialized_options = b'\010\001'
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d220m"]._loaded_options = None
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d220m"]._serialized_options = b'\010\001'
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d330m"]._loaded_options = None
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k90d330m"]._serialized_options = b'\010\001'
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k60d440m"]._loaded_options = None
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_k60d440m"]._serialized_options = b'\010\001'
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_kAlt"]._loaded_options = None
+  _globals['_FIELDOFVIEW'].values_by_name["OBSELETE_kAlt"]._serialized_options = b'\010\001'
+  _globals['_PROCESSORSETTINGS_SYSTEMTYPE'].values_by_name["OBSELETE_kFS3DT"]._loaded_options = None
+  _globals['_PROCESSORSETTINGS_SYSTEMTYPE'].values_by_name["OBSELETE_kFS3DT"]._serialized_options = b'\010\001'
+  _globals['_FIELDOFVIEW']._serialized_start=2663
+  _globals['_FIELDOFVIEW']._serialized_end=2922
+  _globals['_REQUESTRESULT']._serialized_start=128
+  _globals['_REQUESTRESULT']._serialized_end=398
+  _globals['_REQUESTRESULT_RESULTCODE']._serialized_start=256
+  _globals['_REQUESTRESULT_RESULTCODE']._serialized_end=398
+  _globals['_HYDROPHONEDATA']._serialized_start=401
+  _globals['_HYDROPHONEDATA']._serialized_end=582
+  _globals['_TARGETDATA']._serialized_start=585
+  _globals['_TARGETDATA']._serialized_end=916
+  _globals['_BIN']._serialized_start=919
+  _globals['_BIN']._serialized_end=1077
+  _globals['_GROUP']._serialized_start=1079
+  _globals['_GROUP']._serialized_end=1120
+  _globals['_PROCESSORSETTINGS']._serialized_start=1123
+  _globals['_PROCESSORSETTINGS']._serialized_end=1519
+  _globals['_PROCESSORSETTINGS_SYSTEMTYPE']._serialized_start=1445
+  _globals['_PROCESSORSETTINGS_SYSTEMTYPE']._serialized_end=1519
+  _globals['_GETPROCESSORSETTINGSREQUEST']._serialized_start=1521
+  _globals['_GETPROCESSORSETTINGSREQUEST']._serialized_end=1550
+  _globals['_GETPROCESSORSETTINGSRESPONSE']._serialized_start=1553
+  _globals['_GETPROCESSORSETTINGSRESPONSE']._serialized_end=1681
+  _globals['_SETFIELDOFVIEWREQUEST']._serialized_start=1683
+  _globals['_SETFIELDOFVIEWREQUEST']._serialized_end=1747
+  _globals['_SETFIELDOFVIEWRESPONSE']._serialized_start=1749
+  _globals['_SETFIELDOFVIEWRESPONSE']._serialized_end=1819
+  _globals['_SETBOTTOMDETECTIONREQUEST']._serialized_start=1821
+  _globals['_SETBOTTOMDETECTIONREQUEST']._serialized_end=1881
+  _globals['_SETBOTTOMDETECTIONRESPONSE']._serialized_start=1883
+  _globals['_SETBOTTOMDETECTIONRESPONSE']._serialized_end=1957
+  _globals['_SETINWATERSQUELCHREQUEST']._serialized_start=1959
+  _globals['_SETINWATERSQUELCHREQUEST']._serialized_end=2010
+  _globals['_SETINWATERSQUELCHRESPONSE']._serialized_start=2012
+  _globals['_SETINWATERSQUELCHRESPONSE']._serialized_end=2085
+  _globals['_SETSQUELCHLESSINWATERDETECTORREQUEST']._serialized_start=2087
+  _globals['_SETSQUELCHLESSINWATERDETECTORREQUEST']._serialized_end=2163
+  _globals['_SETSQUELCHLESSINWATERDETECTORRESPONSE']._serialized_start=2165
+  _globals['_SETSQUELCHLESSINWATERDETECTORRESPONSE']._serialized_end=2250
+  _globals['_VESSELINFO']._serialized_start=2252
+  _globals['_VESSELINFO']._serialized_end=2300
+  _globals['_GETVESSELINFOREQUEST']._serialized_start=2302
+  _globals['_GETVESSELINFOREQUEST']._serialized_end=2324
+  _globals['_GETVESSELINFORESPONSE']._serialized_start=2326
+  _globals['_GETVESSELINFORESPONSE']._serialized_end=2436
+  _globals['_SETDRAFTREQUEST']._serialized_start=2438
+  _globals['_SETDRAFTREQUEST']._serialized_end=2474
+  _globals['_SETDRAFTRESPONSE']._serialized_start=2476
+  _globals['_SETDRAFTRESPONSE']._serialized_end=2540
+  _globals['_SETKEELOFFSETREQUEST']._serialized_start=2542
+  _globals['_SETKEELOFFSETREQUEST']._serialized_end=2589
+  _globals['_SETKEELOFFSETRESPONSE']._serialized_start=2591
+  _globals['_SETKEELOFFSETRESPONSE']._serialized_end=2660
 # @@protoc_insertion_point(module_scope)

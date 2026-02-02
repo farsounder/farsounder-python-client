@@ -1,10 +1,10 @@
 [project]
 name = "farsounder"
 version = "0.1.0"
-description = "Python client for FarSounder's protobuf over ZeroMQ API"
+description = "Python client to communicate with FarSounder's ARGOS sensors"
 readme = "README.md"
 authors = [
-    { name = "FarSounder", email = "sw@farsounder.com" }
+    { name = "FarSounder Software Team", email = "sw@farsounder.com" }
 ]
 requires-python = ">=3.13"
 dependencies = [
@@ -26,3 +26,8 @@ dev = [
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+exclude = [
+    "src/farsounder/proto/proto/**",
+]

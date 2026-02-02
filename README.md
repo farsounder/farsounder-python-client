@@ -15,21 +15,17 @@ Then - for example to subscribe to `TargetData` messages:
 ```python
 import asyncio
 
-from farsounder import (
-    build_config,
-    get_processor_settings,
-    nav_api_pb2,
-    subscribe
-)
+from farsounder import config, requests, subscriber
+from farsounder.proto import nav_api_pb2
 
 
 async def main() -> None:
-    config = build_config(
+    cfg = config.build_config(
         host="127.0.0.1",
         subscribe=["TargetData"],
     )
 
-    sub = subscribe(config)
+    sub = subscriber.subscribe(config)
 
     def on_targets(message: nav_api_pb2.TargetData) -> None:
         print("Got a TargetData!")
@@ -40,11 +36,11 @@ async def main() -> None:
     await sub.start()
 
     # Req/rep
-    settings = await get_processor_settings(config)
+    settings = await requests.get_processor_settings(config)
     print(settings)
 
     # History data
-    history = await get_history_data(
+    history = await requests.get_history_data(
         config,
         latitude=41.7223,
         longitude=-71.35,

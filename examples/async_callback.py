@@ -1,15 +1,8 @@
 import asyncio
 import sys
 
-from farsounder import (
-    build_config,
-    get_processor_settings,
-    get_history_data,
-    get_vessel_info,
-    nav_api_pb2,
-    subscribe,
-    RequestTimeoutError,
-)
+from farsounder import config, exceptions, requests, subscriber
+from farsounder.proto import nav_api_pb2
 
 
 async def on_targets(message: nav_api_pb2.TargetData) -> None:
@@ -28,32 +21,32 @@ async def main() -> None:
     if sys.platform == "win32":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-    config = build_config(
+    cfg = config.build_config(
         host="127.0.0.1",
         subscribe=["TargetData", "ProcessorSettings"],
         timeout_seconds=10.0,
     )
 
-    sub = subscribe(config)
+    sub = subscriber.subscribe(cfg)
     sub.on("TargetData", on_targets)
     sub.on("ProcessorSettings", on_processor_settings)
 
     await sub.start()
     try:
-        settings = await get_processor_settings(config)
-    except RequestTimeoutError as exc:
+        settings = await requests.get_processor_settings(cfg)
+    except exceptions.RequestTimeoutError as exc:
         print("Timeout waiting for processor settings:", exc)
         return
 
     try:
-        vessel = await get_vessel_info(config)
-    except RequestTimeoutError as exc:
+        vessel = await requests.get_vessel_info(cfg)
+    except exceptions.RequestTimeoutError as exc:
         print("Timeout waiting for vessel info:", exc)
         return
 
     try:
-        history = await get_history_data(
-            config,
+        history = await requests.get_history_data(
+            cfg,
             latitude=41.6538,
             longitude=-71.3712,
             radius_meters=500,

@@ -14,9 +14,4 @@ class NmeaData(_message.Message):
     time: _time_pb2.Time
     playback_time: _time_pb2.Time
     sentence: str
-    def __init__(
-        self,
-        time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
-        playback_time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ...,
-        sentence: _Optional[str] = ...,
-    ) -> None: ...
+    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., playback_time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., sentence: _Optional[str] = ...) -> None: ...
