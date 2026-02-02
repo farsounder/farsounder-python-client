@@ -18,9 +18,6 @@ async def on_processor_settings(message: nav_api_pb2.ProcessorSettings) -> None:
 
 
 async def main() -> None:
-    if sys.platform == "win32":
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
     cfg = config.build_config(
         host="127.0.0.1",
         subscribe=["TargetData", "ProcessorSettings"],
@@ -73,7 +70,12 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    # Loop factory weirdness for issue: https://github.com/zeromq/pyzmq/issues/2137
+    # re: runtime warning about Proactor event loop method deprecation
+    loop_factory = (
+        asyncio.SelectorEventLoop if sys.platform == "win32" else asyncio.new_event_loop
+    )
     try:
-        asyncio.run(main())
+        asyncio.run(main(), loop_factory=loop_factory)
     except KeyboardInterrupt:
         pass

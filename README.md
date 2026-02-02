@@ -1,14 +1,15 @@
 # SDK Client for live FarSounder data
 
-Python client to get live data from the the live zeromq/protobuf API.
+Python client to communicate with SonaSoft via API.
 
 ## Usage
 
-Install:
+Clone locally and install (uv add .) or install from pypi like:
+
 ```
 uv add farsounder
 ```
-(or use pip)
+(or use pip, etc)
 
 Then - for example to subscribe to `TargetData` messages:
 
