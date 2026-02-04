@@ -1,4 +1,4 @@
-# SDK Client for live FarSounder data
+# Python API Client for Argos data
 
 Python client to communicate with SonaSoft via API.
 
