@@ -5,6 +5,7 @@ Python client to communicate with SonaSoft via API.
 >[!NOTE]
 > This is still under active development and testing. But may serve as an example for
 > integration, beyond the lower level example in [sdk repo](https://github.com/farsounder/SDK-Integration-Examples).
+> For now the docs are the interfaces and the examples in examples/
 
 ## Usage
 

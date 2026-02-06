@@ -1,21 +1,22 @@
 import pytest
 
-from farsounder import build_config
+from farsounder import config
 
 
 def test_build_config_defaults() -> None:
-    config = build_config()
-    assert config.host == "127.0.0.1"
-    assert set(config.subscribe) == {
+    cfg = config.build_config()
+    assert cfg.host == "127.0.0.1"
+    assert set(cfg.subscribe) == {
         "HydrophoneData",
         "TargetData",
         "ProcessorSettings",
         "VesselInfo",
     }
+    assert cfg.callback_executor == "threadpool"
 
 
 def test_build_config_overrides() -> None:
-    config = build_config(
+    cfg = config.build_config(
         subscribe=["TargetData"],
         port_overrides={
             "TargetData": 62000,
@@ -23,12 +24,12 @@ def test_build_config_overrides() -> None:
             "GetHistoryData": 3001,
         },
     )
-    assert config.subscribe == ("TargetData",)
-    assert config.pubsub_ports["TargetData"] == 62000
-    assert config.reqrep_ports["GetVesselInfo"] == 60001
-    assert config.rest_ports["GetHistoryData"] == 3001
+    assert cfg.subscribe == ("TargetData",)
+    assert cfg.pubsub_ports["TargetData"] == 62000
+    assert cfg.reqrep_ports["GetVesselInfo"] == 60001
+    assert cfg.rest_ports["GetHistoryData"] == 3001
 
 
 def test_build_config_unknown_override() -> None:
     with pytest.raises(ValueError, match="Unknown port override key"):
-        build_config(port_overrides={"UnknownMessage": 12345})
+        config.build_config(port_overrides={"UnknownMessage": 12345})
