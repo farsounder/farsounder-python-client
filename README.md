@@ -18,13 +18,13 @@ uv add farsounder
 Then - for example to subscribe to `TargetData` messages:
 
 ```python
-import asyncio
+import time
 
 from farsounder import config, requests, subscriber
 from farsounder.proto import nav_api_pb2
 
 
-async def main() -> None:
+def main() -> None:
 
     # Build the configuration:
     # - where is the api running?
@@ -39,8 +39,10 @@ async def main() -> None:
     # Pub/Sub
     sub = subscriber.subscribe(cfg)
     # A callback to run when there are new target data messages
-    # - don't do a lot of processing in here could block event
-    #   loop
+    # - don't do a lot of processing in here it will block (thank GIL - for now...)
+    # - use sync mechanism if you're accessing shared data (callbacks
+    #   run on thread pool [default] or on the receive thread for the message
+    #   type)
     def on_targets(message: nav_api_pb2.TargetData) -> None:
         print("Got a TargetData!")
         print("Targets:", len(message.groups))
@@ -49,15 +51,15 @@ async def main() -> None:
     sub.on("TargetData", on_targets)
 
     # start the receive loop
-    await sub.start()
+    sub.start()
 
     # Req/rep
     # for each of the request / reply endpoints - there are specific
     # get/set functions
-    settings = await requests.get_processor_settings(cfg)
+    settings = requests.get_processor_settings(cfg)
     print(settings)
 
-    history = await requests.get_history_data(
+    history = requests.get_history_data(
         cfg,
         latitude=41.7223,
         longitude=-71.35,
@@ -65,14 +67,14 @@ async def main() -> None:
     )
     print(history.gridded_bottom_detections)
 
-    await asyncio.sleep(1.0)
+    time.sleep(1.0)
 
     # Stop receive loop
-    await sub.stop()
+    sub.stop()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
 ```
 
 ## Simulated backend

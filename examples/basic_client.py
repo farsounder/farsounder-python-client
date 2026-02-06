@@ -1,23 +1,22 @@
-import asyncio
-import sys
+import time
 
 from farsounder import config, exceptions, requests, subscriber
 from farsounder.proto import nav_api_pb2
 
 
-async def on_targets(message: nav_api_pb2.TargetData) -> None:
+def on_targets(message: nav_api_pb2.TargetData) -> None:
     print("Got TargetData message!")
     print("Targets this ping:", len(message.groups))
     print()
 
 
-async def on_processor_settings(message: nav_api_pb2.ProcessorSettings) -> None:
+def on_processor_settings(message: nav_api_pb2.ProcessorSettings) -> None:
     print("Got ProcessorSettings message!")
     print("Processor settings:", message)
     print()
 
 
-async def main() -> None:
+def main() -> None:
     cfg = config.build_config(
         host="127.0.0.1",
         subscribe=["TargetData", "ProcessorSettings"],
@@ -28,14 +27,14 @@ async def main() -> None:
     sub.on("TargetData", on_targets)
     sub.on("ProcessorSettings", on_processor_settings)
 
-    await sub.start()
+    sub.start()
     try:
-        settings = await requests.get_processor_settings(cfg)
+        settings = requests.get_processor_settings(cfg)
     except exceptions.RequestTimeoutError as exc:
         print("Timeout waiting for processor settings:", exc)
 
     try:
-        history = await requests.get_history_data(
+        history = requests.get_history_data(
             cfg,
             latitude=41.6538,
             longitude=-71.3712,
@@ -58,18 +57,13 @@ async def main() -> None:
     print("Listening for messages. Press Ctrl+C to stop.")
     try:
         while True:
-            await asyncio.sleep(1.0)
+            time.sleep(1.0)
     finally:
-        await sub.stop()
+        sub.stop()
 
 
 if __name__ == "__main__":
-    # Loop factory weirdness for issue: https://github.com/zeromq/pyzmq/issues/2137
-    # re: runtime warning about Proactor event loop method deprecation
-    loop_factory = (
-        asyncio.SelectorEventLoop if sys.platform == "win32" else asyncio.new_event_loop
-    )
     try:
-        asyncio.run(main(), loop_factory=loop_factory)
+        main()
     except KeyboardInterrupt:
         pass

@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import asyncio
 from typing import TypeVar
 
 import httpx
 import zmq
-import zmq.asyncio
 from google.protobuf.message import Message
 
 from farsounder.proto.proto import nav_api_pb2 as nav_api
@@ -21,24 +19,27 @@ from farsounder.client.history_types import HistoryData
 ResponseT = TypeVar("ResponseT", bound=Message)
 
 
-async def _request(
+def _request(
     config: ClientConfig,
     endpoint: ReqRepEndpoint,
     request: Message,
     response_cls: type[ResponseT],
 ) -> ResponseT:
-    ctx = zmq.asyncio.Context.instance()
+    ctx = zmq.Context.instance()
     socket = ctx.socket(zmq.REQ)
     try:
         port = resolve_reqrep_port(config, endpoint)
         socket.connect(f"tcp://{config.host}:{port}")
-        await socket.send(request.SerializeToString())
-        try:
-            data = await asyncio.wait_for(socket.recv(), timeout=config.timeout_seconds)
-        except asyncio.TimeoutError as exc:
+        socket.send(request.SerializeToString())
+        poller = zmq.Poller()
+        poller.register(socket, zmq.POLLIN)
+        timeout_ms = int(config.timeout_seconds * 1000)
+        events = dict(poller.poll(timeout=timeout_ms))
+        if socket not in events:
             raise RequestTimeoutError(
                 f"Timeout waiting for {endpoint} after {config.timeout_seconds:.1f}s"
-            ) from exc
+            )
+        data = socket.recv()
     finally:
         socket.close(linger=0)
 
@@ -47,7 +48,7 @@ async def _request(
     return response
 
 
-async def get_processor_settings(
+def get_processor_settings(
     config: ClientConfig,
 ) -> nav_api.GetProcessorSettingsResponse:
     """Request the current processor settings.
@@ -64,7 +65,7 @@ async def get_processor_settings(
     """
 
     request = nav_api.GetProcessorSettingsRequest()
-    return await _request(
+    return _request(
         config,
         "GetProcessorSettings",
         request,
@@ -72,7 +73,7 @@ async def get_processor_settings(
     )
 
 
-async def set_field_of_view(
+def set_field_of_view(
     fov: nav_api.FieldOfView,
     config: ClientConfig,
 ) -> nav_api.SetFieldOfViewResponse:
@@ -92,7 +93,7 @@ async def set_field_of_view(
     """
 
     request = nav_api.SetFieldOfViewRequest(fov=fov)
-    return await _request(
+    return _request(
         config,
         "SetFieldOfView",
         request,
@@ -100,7 +101,7 @@ async def set_field_of_view(
     )
 
 
-async def set_bottom_detection(
+def set_bottom_detection(
     enable: bool,
     config: ClientConfig,
 ) -> nav_api.SetBottomDetectionResponse:
@@ -120,7 +121,7 @@ async def set_bottom_detection(
     """
 
     request = nav_api.SetBottomDetectionRequest(enable_bottom_detection=enable)
-    return await _request(
+    return _request(
         config,
         "SetBottomDetection",
         request,
@@ -128,7 +129,7 @@ async def set_bottom_detection(
     )
 
 
-async def set_inwater_squelch(
+def set_inwater_squelch(
     value: float,
     config: ClientConfig,
 ) -> nav_api.SetInWaterSquelchResponse:
@@ -148,7 +149,7 @@ async def set_inwater_squelch(
     """
 
     request = nav_api.SetInWaterSquelchRequest(new_squelch_val=value)
-    return await _request(
+    return _request(
         config,
         "SetInWaterSquelch",
         request,
@@ -156,7 +157,7 @@ async def set_inwater_squelch(
     )
 
 
-async def set_squelchless_inwater_detector(
+def set_squelchless_inwater_detector(
     enable: bool,
     config: ClientConfig,
 ) -> nav_api.SetSquelchlessInWaterDetectorResponse:
@@ -178,7 +179,7 @@ async def set_squelchless_inwater_detector(
     request = nav_api.SetSquelchlessInWaterDetectorRequest(
         enable_squelchless_detection=enable
     )
-    return await _request(
+    return _request(
         config,
         "SetSquelchlessInWaterDetector",
         request,
@@ -186,7 +187,7 @@ async def set_squelchless_inwater_detector(
     )
 
 
-async def get_vessel_info(
+def get_vessel_info(
     config: ClientConfig,
 ) -> nav_api.GetVesselInfoResponse:
     """Request the current vessel info.
@@ -203,9 +204,7 @@ async def get_vessel_info(
     """
 
     request = nav_api.GetVesselInfoRequest()
-    return await _request(
-        config, "GetVesselInfo", request, nav_api.GetVesselInfoResponse
-    )
+    return _request(config, "GetVesselInfo", request, nav_api.GetVesselInfoResponse)
 
 
 def _build_history_params(
@@ -233,7 +232,7 @@ def _build_history_params(
     return params
 
 
-async def get_history_data(
+def get_history_data(
     config: ClientConfig,
     *,
     latitude: float,
@@ -287,8 +286,8 @@ async def get_history_data(
     )
     url = f"http://{config.host}:{port}/api/history_data"
     try:
-        async with httpx.AsyncClient(timeout=config.timeout_seconds) as client:
-            response = await client.get(url, params=params)
+        with httpx.Client(timeout=config.timeout_seconds) as client:
+            response = client.get(url, params=params)
         response.raise_for_status()
     except httpx.ConnectError as exc:
         raise httpx.ConnectError(

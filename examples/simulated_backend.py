@@ -1,11 +1,10 @@
 import argparse
-import asyncio
+import threading
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
-import sys
 
 import zmq
-import zmq.asyncio
 
 from farsounder.proto.proto import nav_api_pb2 as nav_api
 from farsounder.proto.proto import time_pb2
@@ -88,21 +87,44 @@ def _build_vessel_info(state: BackendState) -> nav_api.VesselInfo:
     return nav_api.VesselInfo(draft=state.draft, keel_offset=state.keel_offset)
 
 
-async def _publish_loop(socket: zmq.asyncio.Socket, builder, interval_s: float) -> None:
-    while True:
-        message = builder()
-        await socket.send(message.SerializeToString())
-        await asyncio.sleep(interval_s)
-
-
-async def _rep_loop(
-    socket: zmq.asyncio.Socket,
-    handler,
+def _publish_loop(
+    bind_address: str,
+    port: int,
+    builder,
+    interval_s: float,
+    stop_event: threading.Event,
 ) -> None:
-    while True:
-        data = await socket.recv()
-        response = handler(data)
-        await socket.send(response.SerializeToString())
+    socket = zmq.Context.instance().socket(zmq.PUB)
+    socket.bind(f"tcp://{bind_address}:{port}")
+    try:
+        while not stop_event.is_set():
+            message = builder()
+            socket.send(message.SerializeToString())
+            time.sleep(interval_s)
+    finally:
+        socket.close(linger=0)
+
+
+def _rep_loop(
+    bind_address: str,
+    port: int,
+    handler,
+    stop_event: threading.Event,
+) -> None:
+    socket = zmq.Context.instance().socket(zmq.REP)
+    socket.bind(f"tcp://{bind_address}:{port}")
+    poller = zmq.Poller()
+    poller.register(socket, zmq.POLLIN)
+    try:
+        while not stop_event.is_set():
+            events = dict(poller.poll(timeout=500))
+            if socket not in events:
+                continue
+            data = socket.recv()
+            response = handler(data)
+            socket.send(response.SerializeToString())
+    finally:
+        socket.close(linger=0)
 
 
 def _handle_get_processor_settings(
@@ -160,21 +182,15 @@ def _handle_get_vessel_info(
     )
 
 
-async def main() -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(description="Simulated nav API backend.")
     parser.add_argument("--bind", default="127.0.0.1", help="Bind address.")
     parser.add_argument("--interval", type=float, default=1.0, help="Publish interval.")
     args = parser.parse_args()
 
-    if sys.platform == "win32":
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
     state = BackendState()
-    ctx = zmq.asyncio.Context.instance()
-
-    pub_sockets: list[zmq.asyncio.Socket] = []
-    rep_sockets: list[zmq.asyncio.Socket] = []
-    tasks: list[asyncio.Task[None]] = []
+    stop_event = threading.Event()
+    threads: list[threading.Thread] = []
 
     pub_map = {
         "HydrophoneData": _build_hydrophone,
@@ -197,31 +213,37 @@ async def main() -> None:
     }
 
     for name, port in PUB_PORTS.items():
-        socket = ctx.socket(zmq.PUB)
-        socket.bind(f"tcp://{args.bind}:{port}")
-        pub_sockets.append(socket)
-        tasks.append(
-            asyncio.create_task(_publish_loop(socket, pub_map[name], args.interval))
+        thread = threading.Thread(
+            target=_publish_loop,
+            args=(args.bind, port, pub_map[name], args.interval, stop_event),
+            name=f"sim-backend-pub-{name}",
+            daemon=True,
         )
+        thread.start()
+        threads.append(thread)
 
     for name, port in REP_PORTS.items():
-        socket = ctx.socket(zmq.REP)
-        socket.bind(f"tcp://{args.bind}:{port}")
-        rep_sockets.append(socket)
-        tasks.append(asyncio.create_task(_rep_loop(socket, rep_map[name])))
+        thread = threading.Thread(
+            target=_rep_loop,
+            args=(args.bind, port, rep_map[name], stop_event),
+            name=f"sim-backend-rep-{name}",
+            daemon=True,
+        )
+        thread.start()
+        threads.append(thread)
 
     print("Simulated backend running. Press Ctrl+C to stop.")
     try:
-        await asyncio.gather(*tasks)
-    except asyncio.CancelledError:
-        pass
+        while True:
+            time.sleep(0.5)
     finally:
-        for socket in pub_sockets + rep_sockets:
-            socket.close(linger=0)
+        stop_event.set()
+        for thread in threads:
+            thread.join()
 
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        main()
     except KeyboardInterrupt:
         pass
