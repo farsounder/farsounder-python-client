@@ -1,8 +1,11 @@
 import argparse
+import json
 import threading
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlparse
 
 import zmq
 
@@ -16,6 +19,8 @@ PUB_PORTS = {
     "ProcessorSettings": 61503,
     "VesselInfo": 61504,
 }
+
+HTTP_PORT = 3000
 
 REP_PORTS = {
     "GetProcessorSettings": 60501,
@@ -85,6 +90,72 @@ def _build_processor_settings(state: BackendState) -> nav_api.ProcessorSettings:
 
 def _build_vessel_info(state: BackendState) -> nav_api.VesselInfo:
     return nav_api.VesselInfo(draft=state.draft, keel_offset=state.keel_offset)
+
+
+def _build_history_payload() -> dict:
+    return {
+        "gridded_bottom_detections": [
+            {
+                "timestamp_utc": time.time(),
+                "latitude_degrees": 41.0,
+                "longitude_degrees": -71.0,
+                "grid_interval_meters": 1.0,
+                "target_strength_db": 10.0,
+                "is_tide_corrected": True,
+                "uploaded_to_cloud": False,
+                "number_of_points": 2,
+                "depth_meters": 12.5,
+            }
+        ],
+        "gridded_inwater_detections": [
+            {
+                "timestamp_utc": time.time(),
+                "latitude_degrees": 41.1,
+                "longitude_degrees": -71.1,
+                "grid_interval_meters": 1.0,
+                "target_strength_db": 11.0,
+                "is_tide_corrected": False,
+                "uploaded_to_cloud": True,
+                "number_of_points": 3,
+                "deepest_depth_meters": 25.0,
+                "shallowest_depth_meters": 5.0,
+            }
+        ],
+    }
+
+
+class _HistoryRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self) -> None:
+        parsed = urlparse(self.path)
+        if parsed.path != "/api/history_data":
+            self.send_error(404, "Not Found")
+            return
+
+        params = parse_qs(parsed.query)
+        include_count = params.get("include_count", ["true"])[0].lower() == "true"
+        payload = _build_history_payload()
+        body = json.dumps(payload).encode("utf-8")
+
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        if include_count:
+            self.send_header("X-Grids-Count", "1")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, format, *args) -> None:
+        return
+
+
+def _http_loop(bind_address: str, stop_event: threading.Event) -> None:
+    server = ThreadingHTTPServer((bind_address, HTTP_PORT), _HistoryRequestHandler)
+    server.timeout = 0.5
+    try:
+        while not stop_event.is_set():
+            server.handle_request()
+    finally:
+        server.server_close()
 
 
 def _publish_loop(
@@ -231,6 +302,15 @@ def main() -> None:
         )
         thread.start()
         threads.append(thread)
+
+    http_thread = threading.Thread(
+        target=_http_loop,
+        args=(args.bind, stop_event),
+        name="sim-backend-http",
+        daemon=True,
+    )
+    http_thread.start()
+    threads.append(http_thread)
 
     print("Simulated backend running. Press Ctrl+C to stop.")
     try:
