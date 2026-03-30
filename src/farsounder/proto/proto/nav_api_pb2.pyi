@@ -102,6 +102,38 @@ class TargetData(_message.Message):
     max_range_index: int
     def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., serial: _Optional[str] = ..., heading: _Optional[_Union[_nav_info_pb2.Heading, _Mapping]] = ..., position: _Optional[_Union[_nav_info_pb2.Position, _Mapping]] = ..., bottom: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ..., groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ..., grid_description: _Optional[_Union[_grid_description_pb2.GridDescription, _Mapping]] = ..., max_depth: _Optional[float] = ..., max_range_index: _Optional[int] = ...) -> None: ...
 
+class RawTargetData(_message.Message):
+    __slots__ = ("time", "serial", "heading", "position", "bottom", "target", "grid_description", "max_depth", "max_range_index", "kernel_roll", "rolls", "tilts", "bin_length", "range_to_first_bin")
+    TIME_FIELD_NUMBER: _ClassVar[int]
+    SERIAL_FIELD_NUMBER: _ClassVar[int]
+    HEADING_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
+    BOTTOM_FIELD_NUMBER: _ClassVar[int]
+    TARGET_FIELD_NUMBER: _ClassVar[int]
+    GRID_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    MAX_DEPTH_FIELD_NUMBER: _ClassVar[int]
+    MAX_RANGE_INDEX_FIELD_NUMBER: _ClassVar[int]
+    KERNEL_ROLL_FIELD_NUMBER: _ClassVar[int]
+    ROLLS_FIELD_NUMBER: _ClassVar[int]
+    TILTS_FIELD_NUMBER: _ClassVar[int]
+    BIN_LENGTH_FIELD_NUMBER: _ClassVar[int]
+    RANGE_TO_FIRST_BIN_FIELD_NUMBER: _ClassVar[int]
+    time: _time_pb2.Time
+    serial: str
+    heading: _nav_info_pb2.Heading
+    position: _nav_info_pb2.Position
+    bottom: _containers.RepeatedCompositeFieldContainer[Bin]
+    target: _containers.RepeatedCompositeFieldContainer[Bin]
+    grid_description: _grid_description_pb2.GridDescription
+    max_depth: float
+    max_range_index: int
+    kernel_roll: float
+    rolls: _containers.RepeatedScalarFieldContainer[float]
+    tilts: _containers.RepeatedScalarFieldContainer[float]
+    bin_length: float
+    range_to_first_bin: float
+    def __init__(self, time: _Optional[_Union[_time_pb2.Time, _Mapping]] = ..., serial: _Optional[str] = ..., heading: _Optional[_Union[_nav_info_pb2.Heading, _Mapping]] = ..., position: _Optional[_Union[_nav_info_pb2.Position, _Mapping]] = ..., bottom: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ..., target: _Optional[_Iterable[_Union[Bin, _Mapping]]] = ..., grid_description: _Optional[_Union[_grid_description_pb2.GridDescription, _Mapping]] = ..., max_depth: _Optional[float] = ..., max_range_index: _Optional[int] = ..., kernel_roll: _Optional[float] = ..., rolls: _Optional[_Iterable[float]] = ..., tilts: _Optional[_Iterable[float]] = ..., bin_length: _Optional[float] = ..., range_to_first_bin: _Optional[float] = ...) -> None: ...
+
 class Bin(_message.Message):
     __slots__ = ("hor_index", "ver_index", "range_index", "cross_range", "down_range", "depth", "strength", "confidence")
     HOR_INDEX_FIELD_NUMBER: _ClassVar[int]

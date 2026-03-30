@@ -9,10 +9,12 @@ def test_build_config_defaults() -> None:
     assert set(cfg.subscribe) == {
         "HydrophoneData",
         "TargetData",
+        "RawTargetData",
         "ProcessorSettings",
         "VesselInfo",
     }
     assert cfg.callback_executor == "threadpool"
+    assert cfg.pubsub_ports["RawTargetData"] == 61505
 
 
 def test_build_config_overrides() -> None:

@@ -6,6 +6,7 @@ from typing import Iterable, Literal, Mapping
 PubSubMessage = Literal[
     "HydrophoneData",
     "TargetData",
+    "RawTargetData",
     "ProcessorSettings",
     "VesselInfo",
 ]
@@ -26,6 +27,7 @@ RestEndpoint = Literal["GetHistoryData",]
 PUBSUB_DEFAULT_PORTS: dict[PubSubMessage, int] = {
     "HydrophoneData": 61501,
     "TargetData": 61502,
+    "RawTargetData": 61505,
     "ProcessorSettings": 61503,
     "VesselInfo": 61504,
 }

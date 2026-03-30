@@ -16,6 +16,7 @@ from farsounder.proto.proto import time_pb2
 PUB_PORTS = {
     "HydrophoneData": 61501,
     "TargetData": 61502,
+    "RawTargetData": 61505,
     "ProcessorSettings": 61503,
     "VesselInfo": 61504,
 }
@@ -75,6 +76,17 @@ def _build_target_data() -> nav_api.TargetData:
         serial="SIM-001",
         max_depth=25.0,
         max_range_index=64,
+    )
+
+
+def _build_raw_target_data() -> nav_api.RawTargetData:
+    return nav_api.RawTargetData(
+        time=_now_time(),
+        serial="SIM-001",
+        max_depth=25.0,
+        max_range_index=64,
+        bin_length=0.5,
+        range_to_first_bin=1.0,
     )
 
 
@@ -266,6 +278,7 @@ def main() -> None:
     pub_map = {
         "HydrophoneData": _build_hydrophone,
         "TargetData": _build_target_data,
+        "RawTargetData": _build_raw_target_data,
         "ProcessorSettings": lambda: _build_processor_settings(state),
         "VesselInfo": lambda: _build_vessel_info(state),
     }

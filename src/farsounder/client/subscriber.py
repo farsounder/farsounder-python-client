@@ -24,6 +24,7 @@ MessageCallback = Callable[[Message], None]
 PUBSUB_MESSAGE_CLASSES: dict[PubSubMessage, type[Message]] = {
     "HydrophoneData": nav_api.HydrophoneData,
     "TargetData": nav_api.TargetData,
+    "RawTargetData": nav_api.RawTargetData,
     "ProcessorSettings": nav_api.ProcessorSettings,
     "VesselInfo": nav_api.VesselInfo,
 }
